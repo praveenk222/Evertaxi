@@ -19,7 +19,7 @@ async function getUsers(req,res){debugger
     try {
         let pool=await poolc.connect();
         console.log('teste');
-        const result = await pool.query('SELECT * FROM operation.member')
+        const result = await pool.query('select * from f_getallmembers()')
         console.log(result)
         console.log(result.rows)
         //result will give all  about table with data
@@ -36,7 +36,7 @@ async function getUsersBYID(req,res){debugger
     try {
         let pool=await poolc.connect();
         console.log('teste',req);
-        const result = await pool.query('SELECT * FROM getfoo(${id}) AS t1;')
+        const result = await pool.query('select * from fn_getallById(1000)')
         // console.log(result)
         // console.log(result.rows)
         //result will give all  about table with data

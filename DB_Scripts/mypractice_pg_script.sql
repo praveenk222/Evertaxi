@@ -132,4 +132,30 @@ AS $BODY$
     SELECT * FROM Operation.Member;
 $BODY$;
 select * from f_getallmembers()
-----retunr table list using function---
+----retunr table only one record will return---
+
+-------------------------to return multiple table values use this----
+drop function f_getallmembers()
+------------------------------------
+CREATE OR REPLACE function f_getallmembers()
+RETURNS SETOF Operation.Member
+LANGUAGE sql
+AS $BODY$
+    SELECT * FROM Operation.Member;
+$BODY$;
+-------------------------to return multiple table values use this----
+
+----------------return table wiht specified columns----
+
+CREATE OR REPLACE function fn_getmembertable()
+RETURNS TABLE
+(
+    userid bigint,
+	emailid varchar(50),
+	mobileno varchar(20)
+)
+LANGUAGE sql
+AS $BODY$
+    SELECT userid,emailid,mobileno FROM Operation.Member ;
+$BODY$;
+-------return table wiht specified columns----
