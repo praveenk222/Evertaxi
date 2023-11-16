@@ -27,7 +27,7 @@ async function getUsers(req,res){debugger
 
     } catch (err) {
         console.log(err.message);
-        res.status(500).send('Internal Server Error')
+        res.status(500).send(err.message)
     }
 }
 //this is the sample ex of sp calling using select statment (imp)
@@ -48,15 +48,41 @@ async function getUsersBYID(req,res){debugger
     }
 }
 async function getUsersSP(req,res){debugger
-    let procedureName = 'my_procedure';
+    console.log('test',req);
 
-    pool.query(`CALL ${procedureName}($1, $2, $3)`, ['param1', 'param2', 'param3'], (error, results) => {
-      if (error) {
-        throw error;
+    let procedureName = 'operation.transfer';
+
+
+    try {
+        let pool=await poolc.connect();
+        console.log('teste');
+     
+        const result = await    pool.query(`CALL ${procedureName}($1, $2, $3,$4,$5,$6)`, ['344441','rrr','433000',null,null,null])
+        console.log(result)
+        console.log(result.rows)
+        //result will give all  about table with data
+        res.send(result.rows);
+
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send(err.message)
+    }
+}
+async function getallUsersSP(req,res){debugger
+    console.log('test',req);
+
+
+
+    let client=await poolc.connect();
+    try {
+
+        const { rows } = await client.query('CALL get_employees(null    )');
+        console.log(rows);
+      
+        // Ensure you close the cursor after fetching results
+      } finally {
+        client.release();
       }
-      console.log(results.rows);
-      pool.end();
-    });
 }
 //get by id
 async function getCardsById(req,res) {
@@ -129,6 +155,7 @@ async function getCardsById(req,res) {
 module.exports = {
     getCards: getUsers,
     getCardsById:getCardsById,
-    saveUsers:saveUsers
+    saveUsers:saveUsers,
+    getUsersSP:getUsersSP
  
 }
