@@ -30,6 +30,42 @@ async function getUsers(req,res){debugger
         res.status(500).send(err.message)
     }
 }
+async function checkLogin(req,res){debugger
+    try {
+        let pool=await poolc.connect();
+let item=req.body
+        console.log(req.body);
+        let query = `select * from checkusername ($1, $2, $3,$4)
+        `
+        const result = await pool.query(query,[item.emailid,item.password,item.mobileno,null])
+        console.log(result)
+        console.log(result.rows)
+        //result will give all  about table with data
+        res.send(result.rows);
+
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send(err.message)
+    }
+}
+async function fn_Login(req,res){debugger
+    try {
+        let pool=await poolc.connect();
+let item=req.body
+        console.log(req.body);
+        let query = `select * from fn_Login ($1, $2, $3)
+        `
+        const result = await pool.query(query,[item.emailid,item.mobileno,item.password,])
+        console.log(result)
+        console.log(result.rows)
+        //result will give all  about table with data
+        res.send(result.rows);
+
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).send(err.message)
+    }
+}
 //this is the sample ex of sp calling using select statment (imp)
 async function getUsersBYID(req,res){debugger
     console.log(req)
@@ -156,6 +192,8 @@ module.exports = {
     getCards: getUsers,
     getCardsById:getCardsById,
     saveUsers:saveUsers,
-    getUsersSP:getUsersSP
+    getUsersSP:getUsersSP,
+    checkLogin:checkLogin,
+    login:fn_Login
  
 }

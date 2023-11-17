@@ -159,3 +159,77 @@ AS $BODY$
     SELECT userid,emailid,mobileno FROM Operation.Member ;
 $BODY$;
 -------return table wiht specified columns----
+
+CREATE OR REPLACE FUNCTION get_employees()
+return Operation.Member;
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  RETURN SELECT * FROM Operation.Member
+END;
+$$;
+
+------------login---
+
+create or replace
+function checkusername (
+         p_EmailID varchar(50),     
+p_MobileNo varchar(20),     
+p_Password varchar(20) ,
+result varchar default '0')     -- type and value to match returns declaration 
+  returns varchar      
+as $$
+begin 
+    if exists ( SELECT * 
+			FROM Operation.Member WHERE     EmailID=p_EmailID 
+                  and Password=p_Password and MobileNo=p_MobileNo
+              )
+    then                                    -- added 
+        result = '1';                       -- added  's and ;
+    else 
+        result = '0';                       -- added  's and ;                                           
+    end if;
+    
+    return result;                          -- added 
+end;  
+$$ language plpgsql;
+
+-----Login----
+
+---check Login User ---
+--here we are checking login user usingmail and pass---
+---main thing return type is table ------imp
+create or replace function fn_Login( p_EmailID varchar(50),     
+p_MobileNo varchar(20),     
+p_Password varchar(20) )
+returns table(id integer,status boolean, message text )
+as $$
+begin 
+    if exists ( SELECT * 
+				FROM Operation.Member
+			    WHERE     EmailID=p_EmailID 
+                  and   Password=p_Password 
+              )
+ 	   then 
+	   return query 
+	   select 1 as id, true as status,'success' as message;
+			 
+	  -- added  's and ;
+		else 
+		return query 
+	   select 0 as id, false as status,'wrong credentials' as message  ;                    -- added  's and ;                                           
+		end if;
+    
+end;  
+$$ language plpgsql;
+-------------------------------------------------
+-----List of all Procedures-----------
+
+
+
+select * from fn_getmembertable()
+select * from f_getallmembers()
+select * from fn_getmembertable()
+select * from fn_getallById(1000)
+
+select * from fn_Login('prvn018@gmail.com',  '8519899222',     '12323' )
