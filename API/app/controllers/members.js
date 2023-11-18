@@ -186,14 +186,23 @@ async function getCardsById(req,res) {
                                        // closes connection
                     }
                 };
-            
 
+                //file upload to public folders..imp
+                
+            
+ async  function  fileupload(req, res) {
+                    // req.file is the name of your file in the form above, here 'uploaded_file'
+                    // req.body will hold the text fields, if there were any 
+                    console.log(req.file, req.body)
+                    res.status(200).send(true)
+                }
 module.exports = {
     getCards: getUsers,
     getCardsById:getCardsById,
     saveUsers:saveUsers,
     getUsersSP:getUsersSP,
     checkLogin:checkLogin,
-    login:fn_Login
+    login:fn_Login,
+    fileupload:fileupload
  
 }

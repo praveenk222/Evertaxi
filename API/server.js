@@ -6,11 +6,13 @@ const bodyparser=require('body-parser');
 const swaggerUI =require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 
-
 var corsOptions = {
   origin: "http://localhost:8080"
 };
 const { swaggerServe, swaggerSetup } = require('./app/config/swagger.config')
+
+
+
 app.use("/api/v1", swaggerServe, swaggerSetup); 
 app.use(cors(corsOptions));
 
