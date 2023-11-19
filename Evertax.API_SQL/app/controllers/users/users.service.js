@@ -1,5 +1,8 @@
+var  config = require('../../config/db.config');
+const  sql = require('mssql');
+
 module.exports = {
-    getAll:getAllusers,
+    getAll:getOrders,
     // getById,
     // create,
     // update,
@@ -9,10 +12,10 @@ module.exports = {
 
 async function getAllusers(req,res){debugger
     try {
+        console.log('test')
         await pool.connect();
         const result = await pool.request()
-            .input('Name', req.query.name)
-            .execute(`SearchEmployee`);
+            .execute(`[Operation].[usp_MemberList]`);
         const employees = result.recordset;
 
         res.json(employees);
@@ -22,7 +25,16 @@ async function getAllusers(req,res){debugger
         res.status(500).send(err.message)
     }
 }
-
+async  function  getOrders() {
+    try {
+      let  pool = await  sql.connect(config);
+      let  products = await  pool.request().query(" SELECT * FROM [Operation].[Member]  ");
+      return  products.recordsets;
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 async function searchUser(req,res){
     try {
         await pool.connect();
@@ -36,6 +48,7 @@ async function searchUser(req,res){
         res.status(500).json(error);
     }
 }
+
 
 async function status(req,res){
     try {

@@ -22,14 +22,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // api routes
-app.use('api/member', require('./app/controllers/members/members.router'));
-app.use('api/users', require('./app/controllers/users/users.service'));
+// app.use('api/member', require('./app/controllers/members/members.router'));
+app.use('/api', require('./app/controllers/MembersNewSQL/member.router'));
 
 // global error handler
 app.use(errorHandler);
 
 // start server
-const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 8000;
+const port = process.env.NODE_ENV === 'production' ? (process.env.PORT || 80) : 8080;
 app.listen(port, () => console.log('Server listening on port ' + port));
 // set port, listen for requests
 
