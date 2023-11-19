@@ -1,7 +1,7 @@
 const tedious = require('tedious');
 const { Sequelize } = require('sequelize');
 
-const { dbName, dbConfig } = require('config.json');
+const { dbName, dbConfig } = require('../config/config.json');
 
 module.exports = db = {};
 
@@ -19,7 +19,7 @@ async function initialize() {
     const sequelize = new Sequelize(dbName, userName, password, { host, dialect });
 
     // init models and add them to the exported db object
-    db.User = require('../users/user.model')(sequelize);
+    db.User = require('../controllers/members/members.model')(sequelize);
 
     // sync all models with database
     await sequelize.sync({ alter: true });
