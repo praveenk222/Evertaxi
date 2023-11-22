@@ -1,7 +1,7 @@
 {
-    "dbName": "node-mssql-crud-api",
+    "dbName": "db_9f30c5_appify",
     "dbConfig": {
-        "server": "localhost",
+        "server": "SQL5109.site4now.net",
         "options": {
             "port": 1433,
             "trustServerCertificate": true
@@ -9,9 +9,11 @@
         "authentication": {
             "type": "default",
             "options": {
-                "userName": "sa",
-                "password": ""
+                "userName": "db_9f30c5_appify_admin",
+                "password": "Adm1n1$tr@t0r"
             }
         }
     }
 }
+
+

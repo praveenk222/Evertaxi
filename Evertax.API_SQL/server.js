@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const memberRoute=require("./app/routes/member.routes")
+const memberRoute=require("./app/controllers/MembersNewSQL/member.router")
 const app = express();
 const bodyparser=require('body-parser');
 
@@ -8,7 +8,8 @@ var corsOptions = {
   origin: "http://localhost:8080"
 };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(bodyparser.json());

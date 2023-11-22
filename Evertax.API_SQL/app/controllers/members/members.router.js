@@ -3,7 +3,7 @@ const router = express.Router();
 const Joi = require('joi');
 
 const validateRequest = require('../../_middleware/validate-request');
-const Role = require('_helpers/role');
+const Role = require('../../_helpers/role');
 const memberService = require('./members.service');
 
 // routes
