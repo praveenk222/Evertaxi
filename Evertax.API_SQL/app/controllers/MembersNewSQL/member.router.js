@@ -1,5 +1,5 @@
 var  express = require('express');
-
+const fs=require('fs');
 var  router = express.Router();
 var  Db = require('../MembersNewSQL/members.service');
 
@@ -34,6 +34,28 @@ router.route('/members').get((request, response) => {
       response.status(200).json(data);
     })
   })
-    
+    router.route('/geee').post((req,res)=>{
+      var data={...req.body}
+
+        function decodeBase64Image(dataString) {
+          var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+            response = {};
+
+          if (matches.length !== 3) {
+            return new Error('Invalid input string');
+          }
+
+          response.type = matches[1];
+          response.data = new Buffer.from(matches[2], 'base64');
+
+          return response;
+        }
+
+        var imageBuffer = decodeBase64Image(data.img);
+        fs.writeFile('test.jpg', imageBuffer.data, function(err) { 
+          console.log(err)
+         });
+        console.log(imageBuffer);
+    })
 
 module.exports = router;
