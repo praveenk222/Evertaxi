@@ -3,10 +3,9 @@ class  Member{
         EmailID,  MobileNo, Password,
         FirstName, LastName,  MemberType,  OTP,
         IsOTPSent, OTPSentDate, IsResendOTP,  IsOTPVerified,IsEmailVerified, IsActive, CreatedOn, 
-        ProfilePhoto,DateofBirth,
+        ProfilePhoto,
         Token,  ParentID,  IsRegisteredByMobile){
-      this.UserID=UserID;
-      this.EmailID=EmailID;
+      this.UserID = UserID;
       this.MobileNo = MobileNo;
       this.Password = Password;
       this.FirstName = FirstName;
@@ -23,7 +22,6 @@ class  Member{
       this.ProfilePhoto = ProfilePhoto;
       this.Token = Token;
       this.ParentID = ParentID;
-      this.DateofBirth=DateofBirth;
       this.IsRegisteredByMobile = IsRegisteredByMobile;
     }
   }

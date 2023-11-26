@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const memberRoute=require("./app/controllers/MembersNewSQL/member.router")
+const memberRoute=require("./app/controllers/MembersNewSQL/member.router");
+const productRoute=require("./app/controllers/ProductMaster/products.router");
+const orderRoute=require("./app/controllers/Orders/orders.router");
 const app = express();
 const bodyparser=require('body-parser');
 
@@ -18,6 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/api", memberRoute);
+app.use("/api", productRoute);
+app.use("/api", orderRoute);
 
 
 // set port, listen for requests

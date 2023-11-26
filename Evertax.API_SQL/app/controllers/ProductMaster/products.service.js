@@ -4,7 +4,7 @@ const  sql = require('mssql');
 async  function  getMembers() {
   try {
     let  pool = await  sql.connect(config);
-    let  products = await  pool.request().query("SELECT *   FROM operation.member  ");
+    let  products = await  pool.request().query("SELECT *   FROM evertaxi.productmaster  ");
     return  products.recordsets;
   }
   catch (error) {
@@ -30,25 +30,13 @@ async  function  addMember(Member) {
   try {
     let  pool = await  sql.connect(config);
     let  insertProduct = await  pool.request()
-    .input('EmailID', sql.NVarChar, Member.EmailID)
-    .input('MobileNo', sql.NVarChar, Member.MobileNo)
-    .input('Password', sql.NVarChar, Member.Password)
-    .input('FirstName', sql.NVarChar, Member.FirstName)
-    .input('LastName', sql.NVarChar, Member.LastName)
-    .input('MemberType', sql.Int, Member.MemberType)
-    .input('OTP', sql.NVarChar, Member.OTP)
-    .input('IsOTPSent', sql.Bit, Member.IsOTPSent)
-    .input('OTPSentDate', sql.DateTime, Member.OTPSentDate)
-    .input('IsResendOTP', sql.Bit, Member.IsResendOTP)
-    .input('IsOTPVerified', sql.Bit, Member.IsOTPVerified)
-    .input('IsEmailVerified', sql.Bit, Member.IsEmailVerified)
-    .input('ISActive', sql.Bit, Member.ISActive)
-    .input('DateofBirth', sql.DateTime, Member.DateofBirth)
-    .input('CreatedOn', sql.DateTime, Member.CreatedOn)
-    .input('ProfilePhoto', sql.NVarChar, Member.ProfilePhoto)
-    .input('IsRegisteredByMobile', sql.Bit, Member.IsRegisteredByMobile)
-    .execute('USP_SaveMembers');
-    return  insertProduct.recordsets[0][0];
+    .input('UserID', sql.Int, Member.UserID)
+    .input('Title', sql.NVarChar, Member.Title)
+    .input('Quantity', sql.Int, Member.Quantity)
+    .input('Message', sql.NVarChar, Member.Message)
+    .input('City', sql.NVarChar, Member.City)
+    .execute('InsertMembers');
+    return  insertProduct.recordsets;
   }
   catch (err) {
     console.log(err);
