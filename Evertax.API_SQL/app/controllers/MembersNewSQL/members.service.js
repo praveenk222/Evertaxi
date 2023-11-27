@@ -1,8 +1,10 @@
 var  config = require('../../config/db.config');
 const  sql = require('mssql');
+const send_otp=require('../Services/twilio_sms.service')
 
 async  function  getMembers() {
   try {
+    console.log(send_otp)
     let  pool = await  sql.connect(config);
     let  products = await  pool.request().query("SELECT *   FROM operation.member  ");
     return  products.recordsets;
@@ -121,6 +123,19 @@ const appUrl = process.env.APP_URL; // http://127.0.0.1
         });
     }
 }
+
+
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
+
+client.messages
+  .create({
+     body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+     from: '+15017122661',
+     to: '+15558675310'
+   })
+  .then(message => console.log(message.sid));
 module.exports = {
   getMembers:  getMembers,
   getMember:  getMember,
