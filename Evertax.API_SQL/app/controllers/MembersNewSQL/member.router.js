@@ -2,6 +2,7 @@ var  express = require('express');
 const fs=require('fs');
 var  router = express.Router();
 var  Db = require('../MembersNewSQL/members.service');
+var  smsservice = require('../Services/twilio_sms.service');
 
 
 router.use((request, response, next) => {
@@ -13,14 +14,14 @@ router.route('/members').get((request, response) => {
       response.json(data[0]);
     })
   })
-  
+
   router.route('/members/:id').get((request, response) => {
     console.log(request.params.id)
     Db.getMember(request.params.id).then((data) => {
       response.json(data[0][0]);
     })
   })
-  
+
   router.route('/members').post((request, response) => {
     let  member = { ...request.body }
     Db.addMember(member).then(data  => {
@@ -52,10 +53,13 @@ router.route('/members').get((request, response) => {
         }
 
         var imageBuffer = decodeBase64Image(data.img);
-        fs.writeFile('test.jpg', imageBuffer.data, function(err) { 
+        fs.writeFile('test.jpg', imageBuffer.data, function(err) {
           console.log(err)
          });
         console.log(imageBuffer);
     })
+    router.route('/sendsms').post((req, res, next)=>{
+      smsservice.sendSMS
 
+    })
 module.exports = router;

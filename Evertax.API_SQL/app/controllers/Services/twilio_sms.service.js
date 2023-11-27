@@ -6,7 +6,11 @@ const client = twilio(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOK
 
 function sendSMS(from, to, body) {
   client.messages
-    .create({ from, to, body })
+    .create({
+        from:from,
+     to:"8519899222", //this must be a verified phone number for twilio trial accounts
+     body:'Please user this OPT to verify your number 74536',
+       })
     .then((message) => {
       console.log(
         `SMS message sent from ${from} to ${to}. Message SID: ${message.sid}`
