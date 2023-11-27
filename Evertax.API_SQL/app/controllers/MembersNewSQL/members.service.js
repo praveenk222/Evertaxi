@@ -12,7 +12,7 @@ const appUrl = process.env.APP_URL; // http://127.0.0.1
 async  function  getMembers() {
   try {
     let  pool = await  sql.connect(config);
-    let  products = await  pool.request().query("SELECT *   FROM operation.member  ");
+    let  products = await  pool.request().query("SELECT *   FROM evertaxi.member  ");
     return  products.recordsets;
   }
   catch (error) {
@@ -36,6 +36,13 @@ async  function  getMember(productId) {
 
 async  function  addMember(Member) {
   try {
+    var digits = '0123456789';
+    let OTP = '';
+    for (let i = 0; i < 6; i++ ) {
+    OTP += digits[Math.floor(Math.random() * 10)];
+    }
+   
+    
     let  pool = await  sql.connect(config);
     let  insertProduct = await  pool.request()
     .input('EmailID', sql.NVarChar, Member.EmailID)
@@ -44,7 +51,7 @@ async  function  addMember(Member) {
     .input('FirstName', sql.NVarChar, Member.FirstName)
     .input('LastName', sql.NVarChar, Member.LastName)
     .input('MemberType', sql.Int, Member.MemberType)
-    .input('OTP', sql.NVarChar, Member.OTP)
+    .input('OTP', sql.NVarChar, OTP)
     .input('IsOTPSent', sql.Bit, Member.IsOTPSent)
     .input('OTPSentDate', sql.DateTime, Member.OTPSentDate)
     .input('IsResendOTP', sql.Bit, Member.IsResendOTP)
@@ -133,17 +140,14 @@ async function  sendsms(data)  {
               //1.validate otp function
               //2.validate success and error message
               let mobileno='+91'+data.mobileno
-              var digits = '0123456789';
-              let OTP = '';
-              for (let i = 0; i < 6; i++ ) {
-              OTP += digits[Math.floor(Math.random() * 10)];
-              }            
+              let OTP =data.otp
+                      
               let sid='';
               //need to check `${otp}` not working....
                     client.messages
                     .create({
                         body: OTP + 'is your Evertaxi verification code.',
-                        from: '+1484282726011',
+                        from: '+14842827260',
                         to: mobileno
                     })
                     .then(message =>{
