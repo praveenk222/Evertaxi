@@ -2,7 +2,7 @@ var  express = require('express');
 const fs=require('fs');
 var  router = express.Router();
 var  Db = require('../MembersNewSQL/members.service');
-var  smsservice = require('../Services/twilio_sms.service');
+
 
 
 router.use((request, response, next) => {
@@ -59,7 +59,13 @@ router.route('/members').get((request, response) => {
         console.log(imageBuffer);
     })
     router.route('/sendsms').post((req, res, next)=>{
-      smsservice.sendSMS
+      let  data = { ...req.body }
+      // console.log('eer',res)
+      Db.sendsms(data).then(
+        data=>{
+         res.status(200).json(data)
+        }
+      )
 
     })
 module.exports = router;
