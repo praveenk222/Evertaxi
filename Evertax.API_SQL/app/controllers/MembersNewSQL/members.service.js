@@ -12,7 +12,7 @@ const appUrl = process.env.APP_URL; // http://127.0.0.1
 async function getMembers() {
   try {
     let pool = await sql.connect(config);
-    let products = await pool.request().query("SELECT *   FROM evertaxi.member  ");
+    let products = await pool.request().query("SELECT *   FROM operation.member  ");
     return products.recordsets;
   }
   catch (error) {
@@ -26,7 +26,7 @@ async function getMember(productId) {
     let pool = await sql.connect(config);
     let product = await pool.request()
       .input('input_parameter', sql.Int, productId)
-      .query("SELECT * from evertaxi.member where userid = @input_parameter");
+      .query("SELECT * from operation.member where userid = @input_parameter");
     return product.recordsets;
   }
   catch (error) {
@@ -56,13 +56,12 @@ async function addMember(Member) {
       .input('OTPSentDate', sql.DateTime, Member.OTPSentDate)
       .input('IsResendOTP', sql.Bit, Member.IsResendOTP)
       .input('IsOTPVerified', sql.Bit, Member.IsOTPVerified)
-      .input('IsEmailVerified', sql.Bit, Member.IsEmailVerified)
       .input('ISActive', sql.Bit, Member.ISActive)
-      .input('DateofBirth', sql.DateTime, Member.DateofBirth)
       .input('CreatedOn', sql.DateTime, Member.CreatedOn)
       .input('ProfilePhoto', sql.NVarChar, Member.ProfilePhoto)
       .input('IsRegisteredByMobile', sql.Bit, Member.IsRegisteredByMobile)
-      .execute('USP_SaveMembers');
+      .input('DateofBirth', sql.DateTime, Member.DateofBirth)
+      .execute('Operation.usp_MembersSave');
     return insertProduct.recordsets[0][0];
   }
   catch (err) {
