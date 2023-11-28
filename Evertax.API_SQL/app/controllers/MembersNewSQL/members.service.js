@@ -136,12 +136,12 @@ async function generateOTP() {
 
 async function  sendsms(data)  {
   try {
-              // console.log(data)
+              console.log(data)
               //1.validate otp function
               //2.validate success and error message
               let mobileno='+91'+data.mobileno
               let OTP =data.otp
-
+console.log(OTP)
               let sid='';
               //need to check `${otp}` not working....
                     client.messages
