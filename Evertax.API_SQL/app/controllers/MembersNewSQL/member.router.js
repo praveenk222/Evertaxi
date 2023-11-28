@@ -68,4 +68,32 @@ router.route('/members').get((request, response) => {
       )
 
     })
+
+    router.post('/', uploadStrategy, (req, res) => {
+      console.log(req)
+      // process.env.AZURE_STORAGE_CONNECTION_STRING
+let string="DefaultEndpointsProtocol=https;AccountName=everdevuat;AccountKey=Pd6/mFhr8WXcAYeuKh49AHgiv+Ug+HOb+sEqCOPO7AWZaswduyJttDGYXYR1fszD0SQAjigQgvxv+AStLmJycg==;EndpointSuffix=core.windows.net"
+let containerName="everdevuat"   ;
+const
+            blobName = getBlobName(req.file.originalname)
+          , blobService = new BlockBlobClient(string,containerName,blobName)
+          , stream = getStream(req.file.buffer)
+          , streamLength = req.file.buffer.length
+      ;
+  console.log(blobName)
+      blobService.uploadStream(stream, streamLength)
+      .then(
+          ()=>{
+              res.render('success', { 
+                  message: 'File uploaded to Azure Blob storage.' 
+              });
+          }
+      ).catch(
+          (err)=>{
+          if(err) {
+              handleError(err);
+              return;
+          }
+      })
+  });
 module.exports = router;
