@@ -26,7 +26,7 @@ async  function  getMember(productId) {
     let  pool = await  sql.connect(config);
     let  product = await  pool.request()
     .input('input_parameter', sql.Int, productId)
-    .query("SELECT * from operation.member where userid = @input_parameter");
+    .query("SELECT * from evertaxi.member where userid = @input_parameter");
     return  product.recordsets;
   }
   catch (error) {
@@ -41,8 +41,8 @@ async  function  addMember(Member) {
     for (let i = 0; i < 6; i++ ) {
     OTP += digits[Math.floor(Math.random() * 10)];
     }
-   
-    
+
+
     let  pool = await  sql.connect(config);
     let  insertProduct = await  pool.request()
     .input('EmailID', sql.NVarChar, Member.EmailID)
@@ -141,7 +141,7 @@ async function  sendsms(data)  {
               //2.validate success and error message
               let mobileno='+91'+data.mobileno
               let OTP =data.otp
-                      
+
               let sid='';
               //need to check `${otp}` not working....
                     client.messages
@@ -151,7 +151,7 @@ async function  sendsms(data)  {
                         to: mobileno
                     })
                     .then(message =>{
-                     
+
                     sid= message.sid
                       // console.log(message.sid)
                     })
@@ -160,8 +160,8 @@ async function  sendsms(data)  {
                             status: true,
                             message: "verified successfully!!",
                         });
-                    
-                    
+
+
 
       }
                 catch(e){
