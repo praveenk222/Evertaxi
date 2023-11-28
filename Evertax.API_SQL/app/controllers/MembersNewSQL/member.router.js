@@ -58,10 +58,10 @@ router.route('/members').get((request, response) => {
          });
         console.log(imageBuffer);
     })
-    router.route('/sendsms').post((req, res, next)=>{
-      let  data = { ...req.body }
-      // console.log('eer',res)
-      Db.sendsms(data).then(
+    router.route('/sendsms').post((request, res)=>{
+      let  data = {...request.body }
+      console.log('eer',request.body)
+      Db.sendsms(request.body).then(
         data=>{
          res.status(200).json(data)
         }
