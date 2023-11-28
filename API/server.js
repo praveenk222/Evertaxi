@@ -5,13 +5,21 @@ const app = express();
 const bodyparser=require('body-parser');
 const swaggerUI =require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
-
+const multer = require('multer')
 var corsOptions = {
   origin: "http://localhost:8080"
 };
 const { swaggerServe, swaggerSetup } = require('./app/config/swagger.config')
 
-
+const storage =multer.diskStorage({
+  destination:(req,file,cb) =>{
+  cb(null,'Images')
+  },
+  finlename:(req,file,cb) =>{
+  cb(null,Date.now()+path.extname(file.originalname))
+  }
+  })
+  const upload = multer({storage:storage})
 
 app.use("/api/v1", swaggerServe, swaggerSetup); 
 app.use(cors(corsOptions));
