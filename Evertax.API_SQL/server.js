@@ -20,8 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/api", memberRoute);
-app.use("/api", productRoute);
-app.use("/api", orderRoute);
+app.use("/api/product", productRoute);
+app.use("/api/orders", orderRoute);
 
 
 // set port, listen for requests

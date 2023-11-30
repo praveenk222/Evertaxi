@@ -30,13 +30,47 @@ async  function  addOrder(Order) {
   try {
     let  pool = await  sql.connect(config);
     let  insertProduct = await  pool.request()
-    .input('UserID', sql.Int, Order.UserID)
-    .input('Title', sql.NVarChar, Order.Title)
-    .input('Quantity', sql.Int, Order.Quantity)
-    .input('Message', sql.NVarChar, Order.Message)
-    .input('City', sql.NVarChar, Order.City)
-    .execute('InsertOrders');
-    return  insertProduct.recordsets;
+    .input('OrderID', sql.Int, Order.OrderID)
+    .input('ProductID', sql.NVarChar, Order.ProductID)
+    .input('BookingStartDate', sql.DateTime, Order.BookingStartDate)
+    .input('BookingEndDate', sql.DateTime, Order.BookingEndDate)
+    .input('IsActive',sql.Bit,Order.IsActive)
+    .execute('usp_Save_OrdersBooking_Details');
+    return  insertProduct.recordsets[0][0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+async  function  OrdersBooking_Single(Order) {
+  try {
+    let  pool = await  sql.connect(config);
+    let  insertProduct = await  pool.request()
+    .input('OrderID', sql.Int, Order.OrderID)
+    .input('ProductID', sql.BigInt, Order.ProductID)
+    .input('BookingStartDate', sql.DateTime, Order.BookingStartDate)
+    .input('BookingEndDate', sql.DateTime, Order.BookingEndDate)
+    .input('IsActive',sql.Bit,Order.IsActive)   
+    .input('IsCancel',sql.Bit,Order.IsCancel)   
+    .input('BookingNo', sql.NVarChar, Order.BookingNo)
+     .input('HubID', sql.Int,Order.HubID )
+     .input('MemberID', sql.Int,Order.MemberID )
+     .input('BookingStatus', sql.SmallInt,Order.BookingStatus )
+     .input('AddressID', sql.SmallInt,Order.AddressID )
+     .input('BookingAmount', sql.Decimal,Order.BookingAmount )
+     .input('AdvanceAmount', sql.Decimal,Order.AdvanceAmount )
+     .input('TaxAmount', sql.Decimal,Order.TaxAmount )
+     .input('TotalAmount', sql.Decimal,Order.TotalAmount )
+     .input('PaidAmount', sql.Decimal,Order.PaidAmount )
+     .input('Remarks', sql.NVarChar,Order.Remarks )
+     .input('DiscountAmount', sql.Decimal,Order.DiscountAmount )
+     .input('CreatedOn', sql.DateTime,Order.CreatedOn )
+     .input('DeliveredOn', sql.DateTime,Order.DeliveredOn )
+     .input('PaymentConfirmedOn', sql.DateTime,Order.PaymentConfirmedOn ) 
+
+    .execute('usp_Save_OrdersBooking_Single');
+  
+  return insertProduct.recordsets[0][0];;
   }
   catch (err) {
     console.log(err);
@@ -65,5 +99,6 @@ module.exports = {
   getOrders:  getOrders,
   getOrder:  getOrder,
   addOrder:  addOrder,
-  OrderLogin : usp_OrderLogin
+  OrderLogin : usp_OrderLogin,
+  Orderbooking : OrdersBooking_Single
 }
