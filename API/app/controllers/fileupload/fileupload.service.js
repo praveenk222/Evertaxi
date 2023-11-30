@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
    else {
      folder = 'defaultFolder';
    }
-    const uploadPath = path.join('uploads', folderName);
+    const uploadPath = path.join('uploads', folder);
 
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });

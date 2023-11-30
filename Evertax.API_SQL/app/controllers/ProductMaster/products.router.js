@@ -7,13 +7,13 @@ var  Db = require('../ProductMaster/products.service');
 router.use((request, response, next) => {
     next();
   });
-router.route('/products').get((request, response) => {
-    Db.getMembers().then((data) => {
+router.route('/get').get((request, response) => {
+    Db.getProducts().then((data) => {
       response.json(data[0]);
     })
   })
   
-  router.route('/products/:id').get((request, response) => {
+  router.route('/get/:id').get((request, response) => {
     console.log(request.params.id)
     Db.getMember(request.params.id).then((data) => {
       response.json(data[0][0]);

@@ -60,6 +60,7 @@ async function addMember(Member) {
       .input('CreatedOn', sql.DateTime, Member.CreatedOn)
       .input('ProfilePhoto', sql.NVarChar, Member.ProfilePhoto)
       .input('IsRegisteredByMobile', sql.Bit, Member.IsRegisteredByMobile)
+      .input('Gender', sql.SmallInt, Member.Gender)
       .input('DateofBirth', sql.DateTime, Member.DateofBirth)
       .execute('Operation.usp_MembersSave');
     return insertProduct.recordsets[0][0];
