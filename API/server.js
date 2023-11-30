@@ -7,6 +7,7 @@ const swaggerUI =require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const multer = require('multer')
 const path = require('path')
+const uploads=require('./app/controllers/fileupload/fileupload.service')
 var corsOptions = {
   origin: "http://localhost:8080"
 };
@@ -30,10 +31,10 @@ app.use(cors(corsOptions));
 app.use(bodyparser.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use("/upload",upload.single("image"),(req,res)=>{
-  res.send("image upload")
-})
-
+// app.use("/upload",upload.single("image"),(req,res)=>{
+//   res.send("image upload")
+// })
+app.use("/uploads",uploads)
 app.use("/api/member", memberRoute);
 
 
