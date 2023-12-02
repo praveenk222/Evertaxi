@@ -15,8 +15,8 @@ router.route('/get').get((request, response) => {
   
   router.route('/get/:id').get((request, response) => {
     console.log(request.params.id)
-    Db.getMember(request.params.id).then((data) => {
-      response.json(data[0][0]);
+    Db.getProductByID(request.params.id).then((data) => {
+      response.json(data);
     })
   })
   

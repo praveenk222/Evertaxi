@@ -42,12 +42,25 @@ async  function  addProduct(Member) {
     console.log(err);
   }
 }
-async  function  getProducts(Member) {
+async  function  getProducts() {
   try {
     let  pool = await  sql.connect(config);
     let  insertProduct = await  pool.request()   
     .execute('usp_ProductMasterGetBy_ID');
     return  insertProduct.recordsets;
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+async  function  getProductByID(data) {
+  try {
+    console.log(data)
+    let  pool = await  sql.connect(config);
+    let  insertProduct = await  pool.request()
+    .input('ProductID',data)   
+    .execute(`usp_ProductMasterGetBy_ID`);
+    return  insertProduct.recordsets[0][0];
   }
   catch (err) {
     console.log(err);
@@ -63,7 +76,8 @@ async function usp_MemberLogin(Member){
           .input('Password', Member.Password)
           .input('VendorID', Member.VendorID)
           .execute(`[Operation].[usp_MemberLogin]`);
-      const employees = result.recordset;
+      const employees = result.recordset[0][0];
+      console.log(employees)
     return employees;
   } catch (error) {
     console.log(error)
@@ -77,6 +91,6 @@ module.exports = {
   getProducts:  getProducts,
   getProduct:  getProduct,
   addProduct:  addProduct,
-  memberLogin : usp_MemberLogin,
+  getProductByID : getProductByID,
   getProducts : getProducts
 }

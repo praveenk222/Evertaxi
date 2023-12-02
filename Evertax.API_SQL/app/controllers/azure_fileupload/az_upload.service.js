@@ -19,17 +19,22 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 
-
+router.get('/create',async (req,res)=>{
+  let data={...req.body}
+  // check key name
+  const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+  const create=blobServiceClient.createContainer(data)
+  console.log(create)
+})
 // Handle file uploads
 router.post('/', upload.single('file'), async (req, res) => {
   const file = req.file;
+  console.log(req)
   if (!file) {
     return res.status(400).send('No file uploaded.');
-  }
-
+  }  
   const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-  const containerClient = blobServiceClient.getContainerClient(containerName);
-
+  const containerClient = blobServiceClient.getContainerClient();
   const blobName = file.originalname;
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
