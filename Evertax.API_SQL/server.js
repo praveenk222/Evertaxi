@@ -9,7 +9,7 @@ const az_upload =require('./app/controllers/azure_fileupload/az_upload.service')
 const hubroute=require('./app/controllers/Bike_hubs/bikehubs.router');
 
 var corsOptions = {
-  origin: "http://localhost:8080"
+  origin: "*"
 };
 
 // app.use(cors(corsOptions));

@@ -72,7 +72,7 @@ async  function  getHubsByID(data) {
     let  insertHub = await  pool.request()
     .input('branchtypeID',data)   
     .execute(`usp_getBranchsListByID`);
-    return  insertHub.recordsets[0][0];
+    return  insertHub.recordsets[0];
   }
   catch (err) {
     console.log(err);

@@ -33,7 +33,7 @@ router.post('/', upload.single('file'), async (req, res) => {
   if (!file) {
     return res.status(400).send('No file uploaded.');
   }  
-  const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
+  const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString,'hubs');
   const containerClient = blobServiceClient.getContainerClient();
   const blobName = file.originalname;
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
