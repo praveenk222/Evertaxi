@@ -6,6 +6,7 @@ const orderRoute=require("./app/controllers/Orders/orders.router");
 const app = express();
 const bodyparser=require('body-parser');
 const az_upload =require('./app/controllers/azure_fileupload/az_upload.service');
+const hubroute=require('./app/controllers/Bike_hubs/bikehubs.router');
 
 var corsOptions = {
   origin: "http://localhost:8080"
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", memberRoute);
 app.use("/api/product", productRoute);
 app.use("/api/orders", orderRoute);
+app.use("/api/hubs", hubroute);
 app.use("/api/upload", az_upload);
 
 
