@@ -53,6 +53,18 @@ async  function  getProducts() {
     console.log(err);
   }
 }
+async  function  getProductByBranchID(data) {
+  try {
+    let  pool = await  sql.connect(config);
+    let  insertProduct = await  pool.request()
+    .input('hubid',data)   
+    .execute(`usp_getProductMasterByBranchID`);
+    return  insertProduct.recordsets[0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 async  function  getProductByID(data) {
   try {
     console.log(data)
@@ -92,5 +104,6 @@ module.exports = {
   getProduct:  getProduct,
   addProduct:  addProduct,
   getProductByID : getProductByID,
-  getProducts : getProducts
+  getProducts : getProducts,
+  getProductByBranchID : getProductByBranchID,
 }

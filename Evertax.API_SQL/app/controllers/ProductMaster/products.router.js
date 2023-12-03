@@ -20,6 +20,13 @@ router.route('/get').get((request, response) => {
     })
   })
   
+  router.route('/bybranch/:id').get((request, response) => {
+    console.log(request.params.id)
+    Db.getProductByBranchID(request.params.id).then((data) => {
+      response.json(data);
+    })
+  })
+  
   router.route('/products').post((request, response) => {
     let  member = { ...request.body }
     Db.addMember(member).then(data  => {
