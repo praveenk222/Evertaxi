@@ -85,7 +85,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 router.post('/voter',upload.single('file'),async(req,res)=>{
   const file =req.file;
   const blobName =file.originalname;
-  containerName='voter';
+  const containerName='voter';
   try{
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
@@ -105,7 +105,7 @@ router.post('/voter',upload.single('file'),async(req,res)=>{
 router.post('/adhar',upload.single('file'),async(req,res)=>{
   const file =req.file;
   const blobName =file.originalname;
-  containerName='adhar';
+  const containerName='adhar';
   try{
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
@@ -125,7 +125,7 @@ router.post('/adhar',upload.single('file'),async(req,res)=>{
 router.post('/licence',upload.single('file'),async(req,res)=>{
   const file =req.file;
   const blobName =file.originalname;
-  containerName='licence';
+  const containerName='licence';
   try{
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
