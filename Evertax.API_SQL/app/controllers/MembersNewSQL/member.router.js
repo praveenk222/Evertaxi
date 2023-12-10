@@ -60,13 +60,17 @@ router.route('/members').get((request, response) => {
     })
     router.route('/sendsms').post((request, res)=>{
       let  data = {...request.body }
-      console.log('eer',request.body)
       Db.sendsms(request.body).then(
         data=>{
          res.status(200).json(data)
-        }
-      )
-
+        })
+    })
+    router.route('/getbymobileno/:number').get((req,res)=>{
+      console.log(req.params.number)
+       let data=req.params.number;
+      Db.getlistbymobileno(data).then(data =>{
+        res.status(200).json(data);
+      })
     })
 
   

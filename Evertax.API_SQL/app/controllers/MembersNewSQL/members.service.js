@@ -6,6 +6,7 @@ let authToken = '045630b213d8ef06cfdb55624b2a82c7'
 const client = require('twilio')(accountSid, authToken);
 const fs = require('fs');
 const path = require('path');
+const { func } = require('joi');
 const port = process.env.APP_PORT; // 3000
 const appUrl = process.env.APP_URL; // http://127.0.0.1
 
@@ -176,12 +177,18 @@ throw new Error(ex.toString())
 }
 
 
-
-
-
 }
 async function sendsms(data) {
 try{
+  let  pool = await  sql.connect(config);
+  const result = await pool.request()
+      .input('MobileNo', data.mobileno)
+      .execute(`usp_checkMobilevalidation`);
+  const m_result = result.recordset;
+  console.log(result.recordset[0])
+    if (result.recordset[0].status == "false") {
+        return result.recordset[0]
+    }
 
   console.log(data)
   //1.validate otp function
@@ -196,8 +203,8 @@ try {
           // Your Twilio API request here
         const message = await client.messages.create({
           body:  OTP + 'is your Evertaxi verification code.',
-          to: '+14842827260',
-          from: mobileno
+          from: '+14842827260',
+          to: mobileno
         });
 
         console.log('Message sent successfully:', message.sid);
@@ -208,7 +215,7 @@ try {
                 });
       } catch (error) {
         // Handle Twilio REST API exceptions
-        console.error('Error sending message:', error.message);
+        console.error('Error sending message:', error.moreInfo);
 
         // You can also check the error code for more specific handling
         if (error.code === 20003) {
@@ -238,10 +245,26 @@ throw new Error(ex.toString())
 
 
 }
+async function getlistbymobileno(data){
+  try {
+    console.log(data)
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('mobileno', data)
+      .execute(`usp_getMemberByMobileno`);
+    const employees = result.recordset[0];
+    console.log(employees)
+    return employees;
+  } catch (error) {
+    console.log(error)
+    // res.status(500).json(error);
+  }
+}
 module.exports = {
   getMembers: getMembers,
   getMember: getMember,
   addMember: addMember,
   memberLogin: usp_MemberLogin,
-  sendsms: sendsms
+  sendsms: sendsms,
+  getlistbymobileno:getlistbymobileno
 }
