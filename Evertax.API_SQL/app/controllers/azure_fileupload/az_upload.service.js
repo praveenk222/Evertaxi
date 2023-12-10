@@ -82,6 +82,68 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+router.post('/voter',upload.single('file'),async(req,res)=>{
+  const file =req.file;
+  const blobName =file.originalname;
+  containerName='voter';
+  try{
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+    const uploadBlobResponse = await blockBlobClient.upload(file.buffer,file.size);
+    console.log(`File "${blobName}" uploaded successfully. ETag: ${uploadBlobResponse.etag}`);
+
+    res.status(200).send('File uploaded successfully');
+  
+  }
+  catch(error){
+  console.error('Error uploading file')
+  res.status(500).send('internal server error');
+  }
+  });
+  
+router.post('/adhar',upload.single('file'),async(req,res)=>{
+  const file =req.file;
+  const blobName =file.originalname;
+  containerName='adhar';
+  try{
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+    const uploadBlobResponse = await blockBlobClient.upload(file.buffer,file.size);
+    console.log(`File "${blobName}" uploaded successfully. ETag: ${uploadBlobResponse.etag}`);
+
+    res.status(200).send('File uploaded successfully');
+  
+  }
+  catch(error){
+  console.error('Error uploading file')
+  res.status(500).send('internal server error');
+  }
+  });
+  
+router.post('/licence',upload.single('file'),async(req,res)=>{
+  const file =req.file;
+  const blobName =file.originalname;
+  containerName='licence';
+  try{
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+    const uploadBlobResponse = await blockBlobClient.upload(file.buffer,file.size);
+    console.log(`File "${blobName}" uploaded successfully. ETag: ${uploadBlobResponse.etag}`);
+
+    res.status(200).send('File uploaded successfully');
+  
+  }
+  catch(error){
+  console.error('Error uploading file')
+  res.status(500).send('internal server error');
+  }
+  });
+  
+  
+  
 router.get('/getblobs',async (req,res)=> {
 
   const containerClient = blobServiceClient.getContainerClient(containerName);
