@@ -2,7 +2,7 @@ var config = require('../../config/db.config');
 const sql = require('mssql');
 let accountSid = 'AC81be3c06511493241dc8301020540f2d'
 
-let authToken = '045630b213d8ef06cfdb55624b2a82c7'
+let authToken = 'ce6869a45123c4e2768991c646e8fb13'
 const client = require('twilio')(accountSid, authToken);
 const fs = require('fs');
 const path = require('path');
@@ -202,7 +202,7 @@ try{
 try {
           // Your Twilio API request here
         const message = await client.messages.create({
-          body:  OTP + 'is your Evertaxi verification code.',
+          body:  OTP + ' is your Evertaxi verification code.',
           from: '+14842827260',
           to: mobileno
         });
@@ -211,7 +211,7 @@ try {
                     return ({
                   id: sid,
                   status: true,
-                  message: "verified successfully!!",
+                  message: "OTP Sent To Your MobileNumber!!",
                 });
       } catch (error) {
         // Handle Twilio REST API exceptions

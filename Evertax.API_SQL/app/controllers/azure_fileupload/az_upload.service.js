@@ -25,8 +25,8 @@ router.get('/create',async (req,res)=>{
   let data={...req.body}
   // check key name
   const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
-  const create=blobServiceClient.createContainer(data)
-  console.log(create)
+  const create=blobServiceClient.createContainer('profilepic')
+  console.log('line 29',create)
 })
 // Handle file uploads
 router.post('/', upload.single('file'), async (req, res) => {
@@ -131,7 +131,7 @@ router.post('/licence',upload.single('file'),async(req,res)=>{
     const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
     const uploadBlobResponse = await blockBlobClient.upload(file.buffer,file.size);
-    console.log(`File "${blobName}" uploaded successfully. ETag: ${uploadBlobResponse.etag}`);
+    console.log(`line :134 - File "${blobName}" uploaded successfully. ETag: ${uploadBlobResponse.etag}`);
 
     res.status(200).send('File uploaded successfully');
   
@@ -142,10 +142,31 @@ router.post('/licence',upload.single('file'),async(req,res)=>{
   }
   });
   
+router.post('/profilepic',upload.single('file'),async(req,res)=>{
+  const file =req.file;
+  console.log(file)
+  const blobName =file.originalname;
+  const containerName='profilepic';
+  try{
+    const containerClient = blobServiceClient.getContainerClient('profilepic');
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+    const uploadBlobResponse = await blockBlobClient.upload(file.buffer,file.size);
+    console.log(`line :134 - File "${blobName}" uploaded successfully. ETag: ${uploadBlobResponse.etag}`);
+
+    res.status(200).json({status:'true',message:'File uploaded successfully'});
+  
+  }
+  catch(error){
+  console.error('Error uploading file',error)
+  res.status(500).send('internal server error');
+  }
+  });
+  
   
   
 router.get('/getblobs',async (req,res)=> {
-
+ let containerName='profilepic'
   const containerClient = blobServiceClient.getContainerClient(containerName);
 
   let i = 1;
@@ -168,4 +189,19 @@ router.get('/getcontainer',async (req,res)=> {
 
 });
 
+
+//not using
+async function convert_base64toFile(){
+  const base64Image = 'data:image/png;base64,iVBORw...'; // Replace with your actual base64 string
+
+  // Extract the file extension and data from the base64 string
+  const matches = base64Image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+  const fileExtension = matches[1].split('/')[1];
+  const base64Data = matches[2];
+  
+  // Decode the base64 data
+  const binaryData = Buffer.from(base64Data, 'base64');
+  
+  // Specify the file p
+}
 module.exports = router;
