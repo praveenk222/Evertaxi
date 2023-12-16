@@ -66,6 +66,7 @@ async  function  OrdersBooking_Single(Order) {
      .input('DiscountAmount', sql.Decimal,Order.DiscountAmount )
      .input('CreatedOn', sql.DateTime,Order.CreatedOn )
      .input('DeliveredOn', sql.DateTime,Order.DeliveredOn )
+     .input('Duration', sql.Numeric,Order.Duration )
      .input('PaymentConfirmedOn', sql.DateTime,Order.PaymentConfirmedOn ) 
 
     .execute('usp_Save_OrdersBooking_Single');

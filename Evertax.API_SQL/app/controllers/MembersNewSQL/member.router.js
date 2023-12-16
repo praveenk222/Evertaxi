@@ -72,6 +72,11 @@ router.route('/members').get((request, response) => {
         res.status(200).json(data);
       })
     })
+    router.route('/getCredentials').get((req,res)=>{
+      Db.getCredentials().then(data =>{
+        res.status(200).json(data);
+      })
+    })
 
   
 module.exports = router;
