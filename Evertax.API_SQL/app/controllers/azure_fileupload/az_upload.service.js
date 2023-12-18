@@ -84,6 +84,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 });
 router.post('/voter',upload.single('file'),async(req,res)=>{
   const file =req.file;
+  console.log(file)
   const blobName =file.originalname;
   const containerName='voter';
   try{
@@ -113,7 +114,7 @@ router.post('/adhar',upload.single('file'),async(req,res)=>{
     const uploadBlobResponse = await blockBlobClient.upload(file.buffer,file.size);
     console.log(`File "${blobName}" uploaded successfully. ETag: ${uploadBlobResponse.etag}`);
 
-    res.status(200).send('File uploaded successfully');
+    res.status(200).send({status:true,message:'File uploaded successfully'});
   
   }
   catch(error){

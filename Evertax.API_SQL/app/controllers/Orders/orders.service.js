@@ -1,3 +1,4 @@
+const { func } = require('joi');
 var  config = require('../../config/db.config');
 const  sql = require('mssql');
 
@@ -94,12 +95,40 @@ async function usp_OrderLogin(Order){
       // res.status(500).json(error);
   }
 }
+async function getOrderByUserID(userid){
+  let pool = await sql.connect(config);
+  const result=await pool.request()
+    .input('MemberID',userid)
+    .execute(`usp_getOrderbyUserID`);
+  return result.recordset;
 
+
+}
+async function getOrderByUserID(userid){
+  let pool = await sql.connect(config);
+  const result=await pool.request()
+    .input('MemberID',userid)
+    .execute(`usp_getOrderbyUserID`);
+  return result.recordset;
+
+
+}
+async function getOrderByOrderID(orderid){
+  let pool = await sql.connect(config);
+  const result=await pool.request()
+    .input('ID',orderid)
+    .execute(`usp_OrderBy_orderID`);
+  return result.recordset;
+
+
+}
 
 module.exports = {
   getOrders:  getOrders,
   getOrder:  getOrder,
   addOrder:  addOrder,
   OrderLogin : usp_OrderLogin,
-  Orderbooking : OrdersBooking_Single
+  Orderbooking : OrdersBooking_Single,
+  getOrderByUserID:getOrderByUserID,
+  getOrderByOrderID:getOrderByOrderID
 }

@@ -35,6 +35,17 @@ router.route('/orders').get((request, response) => {
     return error
   }
  })
-    
+ router.route('/getorderbyUserid/:id').get((req,res)=>{
+   let data=req.params.id;
+  Db.getOrderByUserID(data).then(data =>{
+    res.status(200).json(data);
+  })
+})
+ router.route('/getorderbyorderid/:id').get((req,res)=>{
+   let data=req.params.id;
+  Db.getOrderByOrderID(data).then(data =>{
+    res.status(200).json(data);
+  })
+})
 
 module.exports = router;
