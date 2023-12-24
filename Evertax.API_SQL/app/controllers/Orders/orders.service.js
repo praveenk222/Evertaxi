@@ -98,7 +98,7 @@ async function usp_OrderLogin(Order){
 async function getOrderByUserID(userid){
   let pool = await sql.connect(config);
   const result=await pool.request()
-    .input('MemberID',userid)
+    .input('MemberID',sql.Int,userid)
     .execute(`usp_getOrderbyUserID`);
   return result.recordset;
 }
@@ -106,11 +106,30 @@ async function getOrderByUserID(userid){
 async function getOrderByOrderID(orderid){
   let pool = await sql.connect(config);
   const result=await pool.request()
-    .input('ID',orderid)
+    .input('ID',sql.Int,orderid)
     .execute(`usp_OrderBy_orderID`);
   return result.recordset;
-
-
+}
+async function getOrderSummeryByOrderID(orderid){
+  let pool = await sql.connect(config);
+  const result=await pool.request()
+    .input('ID',sql.Int,orderid)
+    .execute(`[Operation].[usp_BookingSummary]`);
+  return result.recordset;
+}
+async function getOrderSummeryByOrderID(orderid){
+  let pool = await sql.connect(config);
+  const result=await pool.request()
+    .input('OrderID',sql.Int,orderid)
+    .execute(`[Operation].[usp_BookingSummary]`);
+  return result.recordset[0];
+}
+async function getBookingSummaryByBookingID(booingid){
+  let pool = await sql.connect(config);
+  const result=await pool.request()
+    .input('BookingNO',sql.NVarChar,booingid)
+    .execute(`[Operation].[usp_BookingSummaryByBookingID]`);
+  return result.recordset[0];
 }
 
 module.exports = {
@@ -120,5 +139,7 @@ module.exports = {
   OrderLogin : usp_OrderLogin,
   Orderbooking : OrdersBooking_Single,
   getOrderByUserID:getOrderByUserID,
-  getOrderByOrderID:getOrderByOrderID
+  getOrderByOrderID:getOrderByOrderID,
+  getOrderSummeryByOrderID:getOrderSummeryByOrderID,
+  getBookingSummaryByBookingID:getBookingSummaryByBookingID
 }

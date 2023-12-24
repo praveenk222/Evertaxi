@@ -47,5 +47,17 @@ router.route('/orders').get((request, response) => {
     res.status(200).json(data);
   })
 })
+ router.route('/getordersummeryByorderid/:id').get((req,res)=>{
+   let data=req.params.id;
+  Db.getOrderSummeryByOrderID(data).then(data =>{
+    res.status(200).json(data);
+  })
+})
+ router.route('/getordersummeryByBookingNo/:bid').get((req,res)=>{
+   let data=req.params.id;
+  Db.getBookingSummaryByBookingID(data).then(data =>{
+    res.status(200).json(data);
+  })
+})
 
 module.exports = router;
