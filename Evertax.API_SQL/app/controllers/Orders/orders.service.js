@@ -110,13 +110,7 @@ async function getOrderByOrderID(orderid){
     .execute(`usp_OrderBy_orderID`);
   return result.recordset;
 }
-async function getOrderSummeryByOrderID(orderid){
-  let pool = await sql.connect(config);
-  const result=await pool.request()
-    .input('ID',sql.Int,orderid)
-    .execute(`[Operation].[usp_BookingSummary]`);
-  return result.recordset;
-}
+
 async function getOrderSummeryByOrderID(orderid){
   let pool = await sql.connect(config);
   const result=await pool.request()
@@ -124,11 +118,13 @@ async function getOrderSummeryByOrderID(orderid){
     .execute(`[Operation].[usp_BookingSummary]`);
   return result.recordset[0];
 }
-async function getBookingSummaryByBookingID(booingid){
+async function getBookingSummaryByBookingID(data){
   let pool = await sql.connect(config);
+  console.log(data.BookingNo)
   const result=await pool.request()
-    .input('BookingNO',sql.NVarChar,booingid)
-    .execute(`[Operation].[usp_BookingSummaryByBookingID]`);
+    .input('BookingNo',sql.NVarChar,data.BookingNo)
+    .execute(`[Operation].[usp_BookingSummary]`);
+    console.log(result.recordset)
   return result.recordset[0];
 }
 

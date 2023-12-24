@@ -53,9 +53,9 @@ router.route('/orders').get((request, response) => {
     res.status(200).json(data);
   })
 })
- router.route('/getordersummeryByBookingNo/:bid').get((req,res)=>{
-   let data=req.params.id;
-  Db.getBookingSummaryByBookingID(data).then(data =>{
+ router.route('/getordersummeryByBookingNo').post((req,res)=>{
+  console.log('tet',req.body)
+  Db.getBookingSummaryByBookingID(req.body).then(data =>{
     res.status(200).json(data);
   })
 })
