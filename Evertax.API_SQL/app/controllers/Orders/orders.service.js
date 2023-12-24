@@ -101,18 +101,8 @@ async function getOrderByUserID(userid){
     .input('MemberID',userid)
     .execute(`usp_getOrderbyUserID`);
   return result.recordset;
-
-
 }
-async function getOrderByUserID(userid){
-  let pool = await sql.connect(config);
-  const result=await pool.request()
-    .input('MemberID',userid)
-    .execute(`usp_getOrderbyUserID`);
-  return result.recordset;
 
-
-}
 async function getOrderByOrderID(orderid){
   let pool = await sql.connect(config);
   const result=await pool.request()

@@ -11,6 +11,16 @@ async  function  getProducts() {
     console.log(error);
   }
 }
+async  function  getProductTime() {
+  try {
+    let  pool = await  sql.connect(config);
+    let  products = await  pool.request().query("SELECT * FROM PriceTable  ");
+    return  products.recordsets;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
 
 async  function  getProduct(productId) {
   try {
@@ -78,6 +88,8 @@ async  function  getProductByID(data) {
     console.log(err);
   }
 }
+
+
 async function usp_MemberLogin(Member){
   try {
       console.log(Member)
@@ -106,4 +118,5 @@ module.exports = {
   getProductByID : getProductByID,
   getProducts : getProducts,
   getProductByBranchID : getProductByBranchID,
+  getProductTime:getProductTime
 }

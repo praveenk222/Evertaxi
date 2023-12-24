@@ -7,6 +7,7 @@ const app = express();
 const bodyparser=require('body-parser');
 const az_upload =require('./app/controllers/azure_fileupload/az_upload.service');
 const hubroute=require('./app/controllers/Bike_hubs/bikehubs.router');
+const documntroute=require('./app/controllers/DocumentsSave/document.router');
 
 var corsOptions = {
   origin: "*"
@@ -17,6 +18,7 @@ app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
 app.use(bodyparser.json({ limit: "50mb" }));
+// app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
@@ -26,6 +28,7 @@ app.use("/api/product", productRoute);
 app.use("/api/orders", orderRoute);
 app.use("/api/hubs", hubroute);
 app.use("/api/upload", az_upload);
+app.use("/api/documents", documntroute);
 
 
 // set port, listen for requests

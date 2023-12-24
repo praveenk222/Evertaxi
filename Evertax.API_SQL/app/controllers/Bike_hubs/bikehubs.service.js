@@ -78,24 +78,38 @@ async  function  getHubsByID(data) {
     console.log(err);
   }
 }
-async function usp_MemberLogin(Member){
+async  function  getHubsByLatandLong(data) {
   try {
-      console.log(Member)
     let  pool = await  sql.connect(config);
-      const result = await pool.request()
-          .input('EmailID', Member.EmailID)
-          .input('MobileNo', Member.MobileNo)
-          .input('Password', Member.Password)
-          .input('VendorID', Member.VendorID)
-          .execute(`[Operation].[usp_MemberLogin]`);
-      const employees = result.recordset[0][0];
-      console.log(employees)
-    return employees;
-  } catch (error) {
-    console.log(error)
-      // res.status(500).json(error);
+    let  insertHub = await  pool.request()
+    .input('TargetLatitude',data.TargetLatitude)   
+    .input('TargetLongitude',data.TargetLongitude)   
+    .input('RadiusInKm',data.RadiusInKm)   
+    .execute(`usp_Get_NearbyHub_Locations`);
+    console.log(data)
+    return  insertHub.recordsets[0];
+  }
+  catch (err) {
+    console.log(err);
   }
 }
+async  function  getHubDetailsByID(data) {
+  try {
+    //object only
+    console.log(data)
+    let  pool = await  sql.connect(config);
+    let  insertHub = await  pool.request()
+    .input('BranchID',data)   
+    .execute(`usp_BranchDetails_BranchID`);
+    return  insertHub.recordsets[0][0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
+
+
 
 
 
@@ -106,4 +120,6 @@ module.exports = {
   getHubByID : getHubByID,
   getHubs : getHubs,
   getHubsByID : getHubsByID,
+  getHubDetailsByID:getHubDetailsByID,
+  getHubsByLatandLong:getHubsByLatandLong,
 }

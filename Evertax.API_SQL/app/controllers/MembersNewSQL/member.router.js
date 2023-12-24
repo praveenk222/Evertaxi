@@ -24,6 +24,7 @@ router.route('/members').get((request, response) => {
 
   router.route('/members').post((request, response) => {
     let  member = { ...request.body }
+    console.log(member)
     Db.addMember(member).then(data  => {
       response.status(201).json(data);
     })

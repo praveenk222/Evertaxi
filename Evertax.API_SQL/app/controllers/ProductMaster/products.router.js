@@ -12,6 +12,11 @@ router.route('/get').get((request, response) => {
       response.json(data[0]);
     })
   })
+router.route('/getPriceData').get((request, response) => {
+    Db.getProductTime().then((data) => {
+      response.status(200).json(data[0]);
+    })
+  })
   
   router.route('/get/:id').get((request, response) => {
     console.log(request.params.id)
@@ -33,6 +38,7 @@ router.route('/get').get((request, response) => {
       response.status(201).json(data);
     })
   })
+
     
 
 module.exports = router;
