@@ -66,6 +66,13 @@ router.route('/members').get((request, response) => {
          res.status(200).json(data)
         })
     })
+    router.route('/resendsms').post((request, res)=>{
+      let  data = {...request.body }
+      Db.resendsms(data).then(
+        data=>{
+         res.status(200).json(data)
+        })
+    })
     router.route('/getbymobileno/:number').get((req,res)=>{
       console.log(req.params.number)
        let data=req.params.number;

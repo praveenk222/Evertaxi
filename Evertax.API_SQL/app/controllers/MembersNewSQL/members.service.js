@@ -182,16 +182,13 @@ async function sendsms(data) {
     let authToken = cr_res[0].Password
     const client = require('twilio')(accountSid, authToken);
     let pool = await sql.connect(config);
-    const result = await pool.request()
-      .input('MobileNo', data.mobileno)
+    const result = await pool.request().query('MobileNo', data.mobileno)
       .execute(`usp_checkMobilevalidation`);
     const m_result = result.recordset;
     console.log(result.recordset[0])
     if (result.recordset[0].status == "false") {
       return result.recordset[0]
     }
-
-    console.log(data)
     //1.validate otp function
     //2.validate success and error message
     let mobileno = '+91' + data.mobileno
@@ -209,6 +206,60 @@ async function sendsms(data) {
       });
 
       console.log('Message sent successfully:', message.sid);
+      return ({
+        id: sid,
+        status: true,
+        message: "OTP Sent To Your MobileNumber!!",
+      });
+    } catch (error) {
+      // Handle Twilio REST API exceptions
+      console.error('Error sending message:', error.moreInfo);
+
+      // You can also check the error code for more specific handling
+      if (error.code === 20003) {
+        return ({
+          error: true,
+          status: false,
+          message: "authentication failed!!",
+        });
+      } else {
+        console.error('Unknown error');
+        return ({
+          error: true,
+          status: false,
+          message: "authentication failed!!",
+        });
+      }
+    }
+  }
+  catch (ex) {
+    throw new Error(ex.toString())
+  }
+}
+async function resendsms(data) {
+  try {
+    //get twilio credentials from db
+    let cr_res = await getCredentials();
+    let accountSid = cr_res[0].UserID
+    let authToken = cr_res[0].Password
+    const client = require('twilio')(accountSid, authToken);
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+    .input('input_parameter',  data.mobileno)
+    .input('otp',  data.otp)
+    .query("update operation.member set otp=@otp where mobileno = @input_parameter");  
+    //1.validate otp function
+    //2.validate success and error message
+    let mobileno = '+91' + data.mobileno
+    let sid = '';
+    //need to check `${otp}` not working....
+    try {
+      // Your Twilio API request here
+      const message = await client.messages.create({
+        body: data.otp + ' is your Evertaxi verification code.',
+        from: '+14842827260',
+        to: mobileno
+      });
       return ({
         id: sid,
         status: true,
@@ -268,5 +319,6 @@ module.exports = {
   memberLogin: usp_MemberLogin,
   sendsms: sendsms,
   getlistbymobileno: getlistbymobileno,
-  getCredentials: getCredentials
+  getCredentials: getCredentials,
+  resendsms:resendsms
 }
