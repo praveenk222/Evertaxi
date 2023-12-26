@@ -182,7 +182,8 @@ async function sendsms(data) {
     let authToken = cr_res[0].Password
     const client = require('twilio')(accountSid, authToken);
     let pool = await sql.connect(config);
-    const result = await pool.request().query('MobileNo', data.mobileno)
+    const result = await pool.request().
+    input('MobileNo', data.mobileno)
       .execute(`usp_checkMobilevalidation`);
     const m_result = result.recordset;
     console.log(result.recordset[0])
