@@ -1,105 +1,88 @@
 var  config = require('../../config/db.config');
 const  sql = require('mssql');
 
-async  function  getProducts() {
+async  function  getoffers() {
   try {
     let  pool = await  sql.connect(config);
-    let  products = await  pool.request().query("SELECT *   FROM evertaxi.productmaster  ");
-    return  products.recordsets;
+    let  offersndcoupnss = await  pool.request().query("SELECT *   FROM Master.offers  ");
+    return  offersndcoupnss.recordsets;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+async  function  getcoupns() {
+  try {
+    let  pool = await  sql.connect(config);
+    let  offersndcoupnss = await  pool.request().query("SELECT *   FROM Master.Coupons  ");
+    return  offersndcoupnss.recordsets;
   }
   catch (error) {
     console.log(error);
   }
 }
 
-
-async  function  getProduct(productId) {
-  try {
-    console.log(productId)
-    let  pool = await  sql.connect(config);
-    let  product = await  pool.request()
-    .input('input_parameter', sql.Int, productId)
-    .query("SELECT * from operation.member where userid = @input_parameter");
-    return  product.recordsets;
-  }
-  catch (error) {
-    console.log(error);
-  }
-}
-
-async  function  addProduct(Member) {
+async  function  addoffersndcoupns(Member) {
   try {
     let  pool = await  sql.connect(config);
-    let  insertProduct = await  pool.request()
-    .input('UserID', sql.Int, Member.UserID)
-    .input('Title', sql.NVarChar, Member.Title)
-    .input('Quantity', sql.Int, Member.Quantity)
-    .input('Message', sql.NVarChar, Member.Message)
-    .input('City', sql.NVarChar, Member.City)
-    .execute('InsertMembers');
-    return  insertProduct.recordsets;
+    let  insertoffersndcoupns = await  pool.request()
+    .input('OfferName', sql.NVarChar, Member.UserID)
+    .input('OfferDescription', sql.NVarChar, Member.Title)
+    .input('DiscountPercentage', sql.Decimal, Member.Quantity)
+    .input('CouponCode', sql.NVarChar, Member.City)
+    .input('ExpiryDate', sql.DateTime, Member.City)
+    .input('StartDate', sql.DateTime, Member.City)
+    .input('EndDate', sql.DateTime, Member.City)
+    .execute('usp_InsertOfferAndCoupons');
+    return  insertoffersndcoupns.recordsets;
   }
   catch (err) {
     console.log(err);
   }
 }
-async  function  getProducts() {
+async  function  getAlloffersndcoupnss() {
   try {
     let  pool = await  sql.connect(config);
-    let  insertProduct = await  pool.request()   
-    .execute('usp_ProductMasterGetBy_ID');
-    return  insertProduct.recordsets;
+    let  insertoffersndcoupns = await  pool.request()   
+    .execute('GetOfferAndCouponList');
+    return  insertoffersndcoupns.recordsets;
   }
   catch (err) {
     console.log(err);
   }
 }
-async  function  getProductByBranchID(data) {
+async  function  getoffersndcoupnsByuserID(userid) {
   try {
     let  pool = await  sql.connect(config);
-    let  insertProduct = await  pool.request()
-    .input('hubid',data)   
-    .execute(`usp_getProductMasterByBranchID`);
-    return  insertProduct.recordsets[0];
+    let  insertoffersndcoupns = await  pool.request()
+    .input('ID',userid)   
+    .execute(`usp_GetOfferListByUserID`);
+    return  insertoffersndcoupns.recordsets[0];
   }
   catch (err) {
     console.log(err);
   }
 }
-async  function  getProductByID(data) {
+async  function  getoffersndcoupnsByID(data) {
   try {
     console.log(data)
     let  pool = await  sql.connect(config);
-    let  insertProduct = await  pool.request()
-    .input('ProductID',data)   
-    .execute(`usp_ProductMasterGetBy_ID`);
-    return  insertProduct.recordsets[0][0];
+    let  insertoffersndcoupns = await  pool.request()
+    .input('offersndcoupnsID',data)   
+    .execute(`usp_offersndcoupnsMasterGetBy_ID`);
+    return  insertoffersndcoupns.recordsets[0][0];
   }
   catch (err) {
     console.log(err);
   }
 }
-async  function  getProductTime() {
-  try {
-    let  pool = await  sql.connect(config);
-    let  products = await  pool.request().query("SELECT * FROM PriceTable  ");
-    return  products.recordsets;
-  }
-  catch (error) {
-    console.log(error);
-  }
-}
-
-
-
 
 
 module.exports = {
-  getProducts:  getProducts,
-  getProduct:  getProduct,
-  addProduct:  addProduct,
-  getProductByID : getProductByID,
-  getProducts : getProducts,
-  getProductByBranchID : getProductByBranchID,
-  getProductTime:getProductTime
+  addoffersndcoupns:  addoffersndcoupns,
+  getoffersndcoupnsByID : getoffersndcoupnsByID,
+  getAlloffersndcoupns:getAlloffersndcoupnss,
+  getoffersndcoupnsByuserID:getoffersndcoupnsByuserID,
+  getoffers : getoffers,
+  getcoupns : getcoupns
 }

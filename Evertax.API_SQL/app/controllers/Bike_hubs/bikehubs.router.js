@@ -38,6 +38,13 @@ router.route('/get').get((request, response) => {
       response.status(200).json(data);
     })
   })
+  router.route('/getdetailsByPIDnHbID').post((request, response) => {
+    let  hubs = { ...request.body }
+    console.log(hubs)
+    Db.getHubDetailsByPID_HubID(hubs).then(data  => {
+      response.status(200).json(data);
+    })
+  })
     
 
 module.exports = router;

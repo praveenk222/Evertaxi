@@ -7,34 +7,35 @@ var  Db = require('./admin.service');
 router.use((request, response, next) => {
     next();
   });
-router.route('/get').get((request, response) => {
-    Db.getProducts().then((data) => {
+router.route('/getoffers').get((request, response) => {
+    Db.getoffers().then((data) => {
       response.json(data[0]);
     })
   })
-router.route('/getPriceData').get((request, response) => {
-    Db.getProductTime().then((data) => {
-      response.status(200).json(data[0]);
+router.route('/getcoupns').get((request, response) => {
+    Db.getcoupns().then((data) => {
+      response.json(data[0]);
     })
   })
+router.route('/offers/getall').get((request, response) => {
+    Db.getAlloffersndcoupns().then((data) => {
+      response.json(data[0]);
+    })
+  })
+
   
-  router.route('/get/:id').get((request, response) => {
-    console.log(request.params.id)
-    Db.getProductByID(request.params.id).then((data) => {
+  router.route('/offerbyuserid/:id').get((request, response) => {
+    Db.getoffersndcoupnsByuserID(request.params.id).then((data) => {
       response.json(data);
     })
   })
+
   
-  router.route('/bybranch/:id').get((request, response) => {
-    console.log(request.params.id)
-    Db.getProductByBranchID(request.params.id).then((data) => {
-      response.json(data);
-    })
-  })
+ 
   
-  router.route('/products').post((request, response) => {
-    let  member = { ...request.body }
-    Db.addMember(member).then(data  => {
+  router.route('/offers/save').post((request, response) => {
+    let  payload = { ...request.body }
+    Db.addoffersndcoupns(payload).then(data  => {
       response.status(201).json(data);
     })
   })

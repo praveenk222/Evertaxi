@@ -107,6 +107,20 @@ async  function  getHubDetailsByID(data) {
     console.log(err);
   }
 }
+async  function  getHubDetailsByPID_HubID(data) {
+  try {
+    console.log(data)
+    let  pool = await  sql.connect(config);
+    let  insertHub = await  pool.request()
+    .input('ProductID',data.ProductID)   
+    .input('HubID',data.HubID)   
+    .execute(`[Operation].[usp_Booking_Product_hubDetails]`);
+    return  insertHub.recordsets[0][0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 
 
 
@@ -122,4 +136,5 @@ module.exports = {
   getHubsByID : getHubsByID,
   getHubDetailsByID:getHubDetailsByID,
   getHubsByLatandLong:getHubsByLatandLong,
+  getHubDetailsByPID_HubID:getHubDetailsByPID_HubID
 }
