@@ -70,7 +70,8 @@ async  function  getHubsByID(data) {
     console.log(data)
     let  pool = await  sql.connect(config);
     let  insertHub = await  pool.request()
-    .input('branchtypeID',data)   
+    .input('branchtypeID',data.branchtypeID)   
+    .input('branchname',data.branchname)   
     .execute(`usp_getBranchsListByID`);
     return  insertHub.recordsets[0];
   }
@@ -84,6 +85,7 @@ async  function  getHubsByLatandLong(data) {
     let  insertHub = await  pool.request()
     .input('TargetLatitude',data.TargetLatitude)   
     .input('TargetLongitude',data.TargetLongitude)   
+    .input('branchtype',data.branchtype)   
     .input('RadiusInKm',data.RadiusInKm)   
     .execute(`usp_Get_NearbyHub_Locations`);
     console.log(data)

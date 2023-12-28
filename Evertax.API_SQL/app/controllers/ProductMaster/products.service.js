@@ -56,9 +56,13 @@ async  function  getProducts() {
 }
 async  function  getProductByBranchID(data) {
   try {
+    // if(data.ProductName == "NULL"){
+    //   data.ProductName=null;
+    // }
     let  pool = await  sql.connect(config);
     let  insertProduct = await  pool.request()
-    .input('hubid',data)   
+    .input('hubid',data.hubid)   
+    .input('ProductName',data.ProductName)   
     .execute(`usp_getProductMasterByBranchID`);
     return  insertProduct.recordsets[0];
   }
@@ -89,6 +93,24 @@ async  function  getProductTime() {
     console.log(error);
   }
 }
+async function searchProduct(data){
+  try {
+    console.log(data)
+    let pool =await sql.connect(config);
+    if(data.ProductName == "NULL"){
+      data.ProductName = null;
+    }
+    let products=await pool.request()
+    .input('hubid',data.hubid)
+    .input('ProductName',data.ProductName)
+    .execute('usp_getProductMasterByBranchID_new')
+    console.log(products)
+    return products.recordset;
+    
+  } catch (error) {
+    
+  }
+}
 
 
 
@@ -101,5 +123,6 @@ module.exports = {
   getProductByID : getProductByID,
   getProducts : getProducts,
   getProductByBranchID : getProductByBranchID,
-  getProductTime:getProductTime
+  getProductTime:getProductTime,
+  searchProduct:searchProduct,
 }

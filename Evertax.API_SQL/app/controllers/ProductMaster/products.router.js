@@ -25,10 +25,9 @@ router.route('/getPriceData').get((request, response) => {
     })
   })
   
-  router.route('/bybranch/:id').get((request, response) => {
-    console.log(request.params.id)
-    Db.getProductByBranchID(request.params.id).then((data) => {
-      response.json(data);
+  router.route('/bybranch').post((request, response) => {
+    Db.getProductByBranchID(request.body).then((data) => {
+      response.status(200).json(data);
     })
   })
   
@@ -36,6 +35,12 @@ router.route('/getPriceData').get((request, response) => {
     let  member = { ...request.body }
     Db.addMember(member).then(data  => {
       response.status(201).json(data);
+    })
+  })
+  router.route('/search').post((request, response) => {
+    let  member = { ...request.body }
+    Db.searchProduct(member).then(data  => {
+      response.status(200).json(data);
     })
   })
 

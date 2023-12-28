@@ -13,14 +13,12 @@ router.route('/get').get((request, response) => {
     })
   })
   
-  router.route('/get/:id').get((request, response) => {
-    console.log(request.params.id)
-    Db.getHubsByID(request.params.id).then((data) => {
-      response.json(data);
+  router.route('/get').post((request, response) => {
+    Db.getHubsByID(request.body).then((data) => {
+      response.status(200).json(data);
     })
   })
   router.route('/gethubdetails/:id').get((request, response) => {
-    console.log(request.params.id)
     Db.getHubDetailsByID(request.params.id).then((data) => {
       response.status(200).json(data);
     })
