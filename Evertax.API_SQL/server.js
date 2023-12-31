@@ -8,6 +8,7 @@ const bodyparser=require('body-parser');
 const az_upload =require('./app/controllers/azure_fileupload/az_upload.service');
 const hubroute=require('./app/controllers/Bike_hubs/bikehubs.router');
 const documntroute=require('./app/controllers/DocumentsSave/document.router');
+const adminroute=require('./app/controllers/admin/Admin/admin.router')
 
 var corsOptions = {
   origin: "*"
@@ -29,6 +30,7 @@ app.use("/api/orders", orderRoute);
 app.use("/api/hubs", hubroute);
 app.use("/api/upload", az_upload);
 app.use("/api/documents", documntroute);
+app.use("/api/admin", adminroute);
 
 
 // set port, listen for requests

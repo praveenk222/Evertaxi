@@ -1,4 +1,4 @@
-var  config = require('../../config/db.config');
+var  config = require('../../../config/db.config');
 const  sql = require('mssql');
 
 async  function  getoffers() {
@@ -76,7 +76,17 @@ async  function  getoffersndcoupnsByID(data) {
     console.log(err);
   }
 }
-
+async  function  getquestions() {
+  try {
+    let  pool = await  sql.connect(config);
+    let  offersndcoupns = await  pool.request()
+    .execute(`usp_getQustions`);
+    return  offersndcoupns.recordsets[0];
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
 
 module.exports = {
   addoffersndcoupns:  addoffersndcoupns,
@@ -84,5 +94,6 @@ module.exports = {
   getAlloffersndcoupns:getAlloffersndcoupnss,
   getoffersndcoupnsByuserID:getoffersndcoupnsByuserID,
   getoffers : getoffers,
-  getcoupns : getcoupns
+  getcoupns : getcoupns,
+  getquestions:getquestions
 }

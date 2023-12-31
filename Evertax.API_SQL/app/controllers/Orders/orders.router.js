@@ -32,7 +32,7 @@ router.route('/orders').get((request, response) => {
       res.status(201).json(data);
     })
   } catch (error) {
-    return error
+    res.status(200).json({'status':false})
   }
  })
  router.route('/getorderbyUserid/:id').get((req,res)=>{

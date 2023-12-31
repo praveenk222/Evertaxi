@@ -69,6 +69,13 @@ async  function  OrdersBooking_Single(Order) {
      .input('DeliveredOn', sql.DateTime,Order.DeliveredOn )
      .input('Duration', sql.Numeric,Order.Duration )
      .input('PaymentConfirmedOn', sql.DateTime,Order.PaymentConfirmedOn ) 
+     .input('IsFullPaid', sql.Bit,Order.IsFullPaid )
+     .input('WashAmount', sql.Decimal,Order.WashAmount )
+     .input('SecurityAmount', sql.Decimal,Order.SecurityAmount )
+     .input('CouponID', sql.SmallInt,Order.CouponID )
+     .input('ServiceType', sql.SmallInt,Order.ServiceType )
+
+
 
     .execute('usp_Save_OrdersBooking_Single');
   
@@ -76,6 +83,7 @@ async  function  OrdersBooking_Single(Order) {
   }
   catch (err) {
     console.log(err);
+    return err
   }
 }
 async function usp_OrderLogin(Order){
