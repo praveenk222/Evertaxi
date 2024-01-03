@@ -86,6 +86,46 @@ async  function  OrdersBooking_Single(Order) {
     return err
   }
 }
+async  function  Order_Update_Booking_Single(Order) {
+  try {
+    let  pool = await  sql.connect(config);
+    let  insertProduct = await  pool.request()
+    .input('OrderID', sql.Int, Order.OrderID)
+    .input('ProductID', sql.BigInt, Order.ProductID)
+    .input('BookingStartDate', sql.DateTime, Order.BookingStartDate)
+    .input('BookingEndDate', sql.DateTime, Order.BookingEndDate)
+    .input('IsActive',sql.Bit,Order.IsActive)   
+    .input('IsCancel',sql.Bit,Order.IsCancel)   
+    .input('BookingNo', sql.NVarChar, Order.BookingNo)
+     .input('HubID', sql.Int,Order.HubID )
+     .input('MemberID', sql.Int,Order.MemberID )
+     .input('BookingStatus', sql.SmallInt,Order.BookingStatus )
+     .input('AddressID', sql.SmallInt,Order.AddressID )
+     .input('BookingAmount', sql.Decimal,Order.BookingAmount )
+     .input('AdvanceAmount', sql.Decimal,Order.AdvanceAmount )
+     .input('TaxAmount', sql.Decimal,Order.TaxAmount )
+     .input('TotalAmount', sql.Decimal,Order.TotalAmount )
+     .input('PaidAmount', sql.Decimal,Order.PaidAmount )
+     .input('Remarks', sql.NVarChar,Order.Remarks )
+     .input('DiscountAmount', sql.Decimal,Order.DiscountAmount )
+     .input('CreatedOn', sql.DateTime,Order.CreatedOn )
+     .input('DeliveredOn', sql.DateTime,Order.DeliveredOn )
+     .input('Duration', sql.Numeric,Order.Duration )
+     .input('PaymentConfirmedOn', sql.DateTime,Order.PaymentConfirmedOn ) 
+     .input('IsFullPaid', sql.Bit,Order.IsFullPaid )
+     .input('ServiceType', sql.SmallInt,Order.ServiceType )
+
+
+
+    .execute('usp_Update_OrdersBooking_Single');
+  
+  return insertProduct.recordsets[0][0];;
+  }
+  catch (err) {
+    console.log(err);
+    return err
+  }
+}
 async function usp_OrderLogin(Order){
   try {
       console.log(Order)
@@ -135,6 +175,14 @@ async function getBookingSummaryByBookingID(data){
     console.log(result.recordset)
   return result.recordset[0];
 }
+async function getCurrentBookingSummaryofUser(data){
+  let pool = await sql.connect(config);
+  const result=await pool.request()
+    .input('userid',data.userid)
+    .execute(`[Operation].[usp_BookingSummary_Current]`);
+    console.log(result.recordset)
+  return result.recordset[0];
+}
 
 module.exports = {
   getOrders:  getOrders,
@@ -145,5 +193,7 @@ module.exports = {
   getOrderByUserID:getOrderByUserID,
   getOrderByOrderID:getOrderByOrderID,
   getOrderSummeryByOrderID:getOrderSummeryByOrderID,
-  getBookingSummaryByBookingID:getBookingSummaryByBookingID
+  getBookingSummaryByBookingID:getBookingSummaryByBookingID,
+  getUserCurrentBooking:getCurrentBookingSummaryofUser,
+  extendCurrentOrder:Order_Update_Booking_Single
 }

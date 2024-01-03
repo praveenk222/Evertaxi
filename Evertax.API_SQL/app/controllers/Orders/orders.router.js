@@ -35,6 +35,16 @@ router.route('/orders').get((request, response) => {
     res.status(200).json({'status':false})
   }
  })
+ router.route('/extendCurrentOrder').post((req,res)=>{
+  try {
+    
+    Db.extendCurrentOrder(req.body).then((data)=>{
+      res.status(201).json(data);
+    })
+  } catch (error) {
+    res.status(200).json({'status':false})
+  }
+ })
  router.route('/getorderbyUserid/:id').get((req,res)=>{
    let data=req.params.id;
   Db.getOrderByUserID(data).then(data =>{
@@ -56,6 +66,12 @@ router.route('/orders').get((request, response) => {
  router.route('/getordersummeryByBookingNo').post((req,res)=>{
   console.log('tet',req.body)
   Db.getBookingSummaryByBookingID(req.body).then(data =>{
+    res.status(200).json(data);
+  })
+})
+ router.route('/getUserCurrentBooking').post((req,res)=>{
+  console.log('tet',req.body)
+  Db.getUserCurrentBooking(req.body).then(data =>{
     res.status(200).json(data);
   })
 })

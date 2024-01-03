@@ -261,6 +261,48 @@ async function getCredentials() {
     .execute(`usp_credentials`);
   return result.recordset;
 }
+
+
+async function saveUserSecurityPin(data) {
+  try {
+    
+    console.log(data)
+    if(data.pin == null){
+      data.pin=1234
+    }
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('userid', data.userid)
+      .input('pin', data.pin)
+      .input('iskyc', data.iskyc)
+      .execute(`usp_setMemberPin`);
+    const employees = result.recordset[0];
+    return employees;
+  } catch (error) {
+    console.log(error)
+    // res.status(500).json(error);
+  }
+}
+
+async function updateuserKyc(data) {
+  try {
+    data.pin=0;
+    //default value 0 to update kyc status
+    console.log(data)
+
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('userid', data.userid)
+      .input('pin', data.pin)
+      .input('iskyc', data.iskyc)
+      .execute(`usp_setMemberPin`);
+    const employees = result.recordset[0];
+    return employees;
+  } catch (error) {
+    console.log(error)
+    return error;
+  }
+}
 module.exports = {
   getMembers: getMembers,
   getMember: getMember,
@@ -268,5 +310,7 @@ module.exports = {
   memberLogin: usp_MemberLogin,
   sendsms: sendsms,
   getlistbymobileno: getlistbymobileno,
-  getCredentials: getCredentials
+  getCredentials: getCredentials,
+  updateuserKyc:updateuserKyc,
+  saveUserSecurityPin:saveUserSecurityPin
 }
