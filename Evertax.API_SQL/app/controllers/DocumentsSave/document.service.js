@@ -99,6 +99,20 @@ async function removedocumentbyuserid(data) {
     // res.status(500).json(error);
   }
 }
+async function checkkyc(data) {
+  try {
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('UserID', data)
+      .execute(`[Operation].[usp_CheckKYC]`);
+    const employees = result.recordset[0];
+    return employees;
+  } catch (error) {
+    console.log(error)
+    return error;
+    // res.status(500).json(error);
+  }
+}
 
 module.exports = {
   getdocuments: getdocuments,
@@ -107,4 +121,5 @@ module.exports = {
   documentLogin: usp_documentLogin,
   getdocumentbyuserid: getdocumentbyuserid,
   removedocumentbyuserid: removedocumentbyuserid,
+  checkkyc:checkkyc
 }
