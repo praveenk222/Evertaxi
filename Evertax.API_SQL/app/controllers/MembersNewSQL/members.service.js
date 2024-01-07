@@ -371,6 +371,19 @@ async function deleteUserAddress(data) {
     // res.status(500).json(error);
   }
 }
+async function getAddressByAdID(data) {
+  try {
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('AddressID', data)
+      .execute(`usp_getAddressByAdID`);
+    const employees = result.recordset;
+  return employees
+  } catch (error) {
+    console.log(error)
+    return error  
+  }
+}
 module.exports = {
   getMembers: getMembers,
   getMember: getMember,
@@ -384,4 +397,5 @@ module.exports = {
   addUserAddress:addUserAddress,
   getuseraddressbyID:getaddresslistbyID,
   deleteUserAddress:deleteUserAddress,
+  getAddressByAdID:getAddressByAdID
 }

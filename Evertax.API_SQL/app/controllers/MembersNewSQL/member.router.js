@@ -91,6 +91,10 @@ router.route('/getaddress/:id').get((req, res) => {
   console.log(req.params.id)
   Db.getuseraddressbyID(req.params.id).then(data => { res.status(200).json(data) })
 })
+router.route('/getAddressByAdID/:id').get((req, res) => {
+  console.log(req.params.id)
+  Db.getAddressByAdID(req.params.id).then(data => { res.status(200).json(data) })
+})
 router.route('/deleteUseraddress').post((req, res) => {
   Db.deleteUserAddress(req.body).then(data => { res.status(200).json(data) })
 })
