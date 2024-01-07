@@ -340,7 +340,8 @@ async function getaddresslistbyID(data) {
     const result = await pool.request()
       .input('LinkID', data)
       .execute(`[Operation].[usp_AddressList]`);
-    const employees = result.recordset[0];
+      // console.log(result.recordset)
+    const employees = result.recordset;
     if(employees == undefined){
       return false;
     }
