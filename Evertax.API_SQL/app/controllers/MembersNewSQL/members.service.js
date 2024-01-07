@@ -351,6 +351,25 @@ async function getaddresslistbyID(data) {
     // res.status(500).json(error);
   }
 }
+async function deleteUserAddress(data) {
+  try {
+    console.log(data)
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('LinkID', data.LinkID)
+      .input('AddressID', data.AddressID)
+      .execute(`[Operation].[usp_AddressDelete]`);
+    const employees = result.recordset[0];
+    if(employees == undefined){
+      return false;
+    }
+    console.log(employees)
+    return employees;
+  } catch (error) {
+    console.log(error)
+    // res.status(500).json(error);
+  }
+}
 module.exports = {
   getMembers: getMembers,
   getMember: getMember,
@@ -362,5 +381,6 @@ module.exports = {
   updateuserKyc:updateuserKyc,
   saveUserSecurityPin:saveUserSecurityPin,
   addUserAddress:addUserAddress,
-  getuseraddressbyID:getaddresslistbyID
+  getuseraddressbyID:getaddresslistbyID,
+  deleteUserAddress:deleteUserAddress,
 }
