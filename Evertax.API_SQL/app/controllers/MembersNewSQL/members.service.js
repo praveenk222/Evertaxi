@@ -303,6 +303,54 @@ async function updateuserKyc(data) {
     return error;
   }
 }
+//add address
+async function addUserAddress(Member) {
+  try {
+  
+    let pool = await sql.connect(config);
+    let insertProduct = await pool.request()
+      .input('AddressID',  Member.AddressID)
+      .input('LinkID',  Member.LinkID)
+      .input('AddressType',  Member.AddressType)
+      .input('HouseNo',  Member.HouseNo)
+      .input('Address1',  Member.Address1)
+      .input('Address2',  Member.Address2)
+      .input('Landmark',  Member.Landmark)
+      .input('City',  Member.City)
+      .input('ZipCode',  Member.ZipCode)
+      .input('AlternateNo',  Member.AlternateNo)
+      .input('State',  Member.State)
+      .input('Country',  Member.Country)
+      .input('Latitude',  Member.Latitude)
+      .input('Longitude',  Member.Longitude)
+      .input('IsDefault',  Member.IsDefault)
+      .input('LocationID',  Member.LocationID)
+      .execute('[Operation].[usp_AddressSave]');
+    return insertProduct.recordsets[0][0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+//
+async function getaddresslistbyID(data) {
+  try {
+    console.log(data)
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('LinkID', data)
+      .execute(`[Operation].[usp_AddressList]`);
+    const employees = result.recordset[0];
+    if(employees == undefined){
+      return false;
+    }
+    console.log(employees)
+    return employees;
+  } catch (error) {
+    console.log(error)
+    // res.status(500).json(error);
+  }
+}
 module.exports = {
   getMembers: getMembers,
   getMember: getMember,
@@ -312,5 +360,7 @@ module.exports = {
   getlistbymobileno: getlistbymobileno,
   getCredentials: getCredentials,
   updateuserKyc:updateuserKyc,
-  saveUserSecurityPin:saveUserSecurityPin
+  saveUserSecurityPin:saveUserSecurityPin,
+  addUserAddress:addUserAddress,
+  getuseraddressbyID:getaddresslistbyID
 }

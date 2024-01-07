@@ -105,6 +105,7 @@ async function checkkyc(data) {
     const result = await pool.request()
       .input('UserID', data)
       .execute(`[Operation].[usp_CheckKYC]`);
+      console.log(result.recordset)
     const employees = result.recordset[0];
     return employees;
   } catch (error) {

@@ -84,6 +84,13 @@ router.route('/updateUserKycStatus').post((req, res) => {
 router.route('/setUserPin').post((req, res) => {
   Db.saveUserSecurityPin(req.body).then(data => { res.status(200).json(data) })
 })
+router.route('/saveUserAddress').post((req, res) => {
+  Db.addUserAddress(req.body).then(data => { res.status(200).json(data) })
+})
+router.route('/getaddress/:id').get((req, res) => {
+  console.log(req.params.id)
+  Db.getuseraddressbyID(req.params.id).then(data => { res.status(200).json(data) })
+})
 
 
 module.exports = router;
