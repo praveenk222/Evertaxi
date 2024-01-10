@@ -98,6 +98,15 @@ router.route('/getAddressByAdID/:id').get((req, res) => {
 router.route('/deleteUseraddress').post((req, res) => {
   Db.deleteUserAddress(req.body).then(data => { res.status(200).json(data) })
 })
-
+router.route('/saveTrustedContacts').post((req, res) => {
+  Db.saveTrustedContacts(req.body).then(data => 
+    { res.status(200).json(data) },
+    (error)=>{res.status(500).json(error)}
+  )
+})
+router.route('/gettrustedcontacts/:id').get((req, res) => {
+  console.log(req.params.id)
+  Db.getTrustedMembers(req.params.id).then(data => { res.status(200).json(data) })
+})
 
 module.exports = router;

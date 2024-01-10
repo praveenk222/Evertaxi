@@ -45,6 +45,11 @@ router.route('/offers/getall').get((request, response) => {
     })
   })
 
-    
+  router.route('/offers/search').post((request, response) => {
+    let  payload = { ...request.body }
+    Db.getOffersSearch(payload).then(data  => {
+      response.status(200).json(data);
+    })
+  })
 
 module.exports = router;

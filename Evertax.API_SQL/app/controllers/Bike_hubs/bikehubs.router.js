@@ -36,6 +36,12 @@ router.route('/get').get((request, response) => {
       response.status(200).json(data);
     })
   })
+  router.route('/getnearByHubsListSearch').post((request, response) => {
+    let  hubs = { ...request.body }
+    Db.getHubsByLatandLong_Search(hubs).then(data  => {
+      response.status(200).json(data);
+    })
+  })
   router.route('/getdetailsByPIDnHbID').post((request, response) => {
     let  hubs = { ...request.body }
     console.log(hubs)

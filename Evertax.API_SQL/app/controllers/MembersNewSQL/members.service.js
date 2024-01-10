@@ -61,6 +61,7 @@ async function addMember(Member) {
       .input('Gender', sql.SmallInt, Member.Gender)
       .input('DateofBirth', sql.DateTime, Member.DateofBirth)
       .execute('Operation.usp_MembersSave');
+      console.log(insertProduct.recordsets[0])
     return insertProduct.recordsets[0][0];
   }
   catch (err) {
@@ -384,6 +385,41 @@ async function getAddressByAdID(data) {
     return error  
   }
 }
+async function saveTrustedContacts(Member) {
+  try {
+  
+
+    let pool = await sql.connect(config);
+    let insertProduct = await pool.request()
+      .input('ID', sql.Int, Member.ID)
+      .input('UserID', sql.BigInt, Member.UserID)
+      .input('MobileNo', sql.NVarChar, Member.MobileNo)
+      .input('FirstName', sql.NVarChar, Member.FirstName)
+      .input('LastName', sql.NVarChar, Member.LastName)
+      .input('MemberType', sql.Int, Member.MemberType)
+      .input('IsActive', sql.Bit, Member.IsActive)
+      .execute('Operation.usp_TrustedContacts ');
+      console.log(insertProduct.recordsets[0])
+    return insertProduct.recordsets[0][0];
+  }
+  catch (err) {
+    console.log(err);
+    return err.message
+  }
+}
+async function getTrustedMembers(userid) {
+  try {
+    let pool = await sql.connect(config);
+    let product = await pool.request()
+    .input('input_parameter', sql.Int, userid)
+    .query("SELECT *   FROM [Operation].[UserFamilyContacts] where IsActive=1 AND userid = @input_parameter ");
+    return product.recordsets[0];
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   getMembers: getMembers,
   getMember: getMember,
@@ -397,5 +433,7 @@ module.exports = {
   addUserAddress:addUserAddress,
   getuseraddressbyID:getaddresslistbyID,
   deleteUserAddress:deleteUserAddress,
-  getAddressByAdID:getAddressByAdID
+  getAddressByAdID:getAddressByAdID,
+  saveTrustedContacts:saveTrustedContacts,
+  getTrustedMembers:getTrustedMembers
 }

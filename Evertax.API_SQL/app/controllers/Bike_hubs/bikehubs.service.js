@@ -95,6 +95,23 @@ async  function  getHubsByLatandLong(data) {
     console.log(err);
   }
 }
+async  function  getHubsByLatandLong_Search(data) {
+  try {
+    let  pool = await  sql.connect(config);
+    let  insertHub = await  pool.request()
+    .input('TargetLatitude',data.TargetLatitude)   
+    .input('TargetLongitude',data.TargetLongitude)   
+    .input('branchtype',data.branchtype)   
+    .input('RadiusInKm',data.RadiusInKm)   
+    .input('SearchKeyword',data.SearchKeyword)   
+    .execute(`usp_Get_NearbyHub_Locations_Search`);
+    console.log(data)
+    return  insertHub.recordsets[0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 async  function  getHubDetailsByID(data) {
   try {
     //object only
@@ -138,5 +155,6 @@ module.exports = {
   getHubsByID : getHubsByID,
   getHubDetailsByID:getHubDetailsByID,
   getHubsByLatandLong:getHubsByLatandLong,
-  getHubDetailsByPID_HubID:getHubDetailsByPID_HubID
+  getHubDetailsByPID_HubID:getHubDetailsByPID_HubID,
+  getHubsByLatandLong_Search:getHubsByLatandLong_Search
 }

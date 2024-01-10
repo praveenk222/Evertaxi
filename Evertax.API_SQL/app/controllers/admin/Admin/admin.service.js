@@ -87,7 +87,22 @@ async  function  getquestions() {
     console.log(error);
   }
 }
-
+async  function  getOffersSearch(data) {
+  try {
+    let  pool = await  sql.connect(config);
+    let  insertoffersndcoupns = await  pool.request()
+    .input('ID',data.Userid)   
+    .input('SearchKeyword',data.SearchKeyword)   
+    .input('MinimumDiscount',data.MinimumDiscount)   
+    .input('StartDate',data.StartDate)   
+    .input('EndDate',data.EndDate)   
+    .execute(`usp_GetOfferList_Search`);
+    return  insertoffersndcoupns.recordsets[0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 module.exports = {
   addoffersndcoupns:  addoffersndcoupns,
   getoffersndcoupnsByID : getoffersndcoupnsByID,
@@ -95,5 +110,6 @@ module.exports = {
   getoffersndcoupnsByuserID:getoffersndcoupnsByuserID,
   getoffers : getoffers,
   getcoupns : getcoupns,
-  getquestions:getquestions
+  getquestions:getquestions,
+  getOffersSearch:getOffersSearch
 }
