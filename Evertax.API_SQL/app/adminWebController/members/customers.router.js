@@ -1,17 +1,18 @@
 var express = require('express');
 const fs = require('fs');
 var router = express.Router();
-var Db = require('../MembersNewSQL/members.service');
-
+var Db = require('../members/customers.service');
+var PostResult=require('../../Models/postresult.model')
 
 
 router.use((request, response, next) => {
   // console.log('middleware');
   next();
 });
-router.route('/members').get((request, response) => {
+router.route('/').get((request, response) => {
   Db.getMembers().then((data) => {
-    response.json(data[0]);
+    
+    response.json({'id':1,'status':true,'message':data[0]});
   })
 })
 
@@ -59,13 +60,7 @@ router.route('/geee').post((req, res) => {
   });
   console.log(imageBuffer);
 })
-router.route('/sendsms').post((request, res) => {
-  let data = { ...request.body }
-  Db.sendsms(request.body).then(
-    data => {
-      res.status(200).json(data)
-    })
-})
+
 router.route('/getbymobileno/:number').get((req, res) => {
   console.log(req.params.number)
   let data = req.params.number;

@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+
 const { BlobServiceClient } = require('@azure/storage-blob');
 const path = require('path');
 const fs = require('fs');
@@ -189,7 +190,29 @@ router.get('/getcontainer',async (req,res)=> {
   }
 
 });
+// Route for handling file uploads to Azure Blob Storage
+router.post('/bulkupload', upload.array('files', 5), async (req, res) => {
+  try {
+    console.log(req)
+    const uploadedFiles = req.files;
+    const containerClient = blobServiceClient.getContainerClient(containerName);
 
+
+    for (const file of uploadedFiles) {
+      const blobName =  file.originalname;
+      const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+      await blockBlobClient.upload(file.buffer, file.size);
+
+      console.log(`File ${file.originalname} uploaded to Azure Blob Storage as ${blobName}`);
+    }
+
+    res.send('Files uploaded to Azure Blob Storage successfully.');
+  } catch (error) {
+    console.error('Error uploading files to Azure Blob Storage:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 //not using
 async function convert_base64toFile(){

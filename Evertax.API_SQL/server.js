@@ -10,6 +10,11 @@ const hubroute=require('./app/controllers/Bike_hubs/bikehubs.router');
 const documntroute=require('./app/controllers/DocumentsSave/document.router');
 const adminroute=require('./app/controllers/admin/Admin/admin.router')
 
+///webAdmin APIS
+const hubs_product=require('./app/adminWebController/ProductManagment/productsManagment.router')
+const admin_customers=require('./app/adminWebController/members/customers.router')
+const admin_orders=require('./app/adminWebController/OrderManagment/ordermanagment.router')
+
 var corsOptions = {
   origin: "*"
 };
@@ -31,6 +36,13 @@ app.use("/api/hubs", hubroute);
 app.use("/api/upload", az_upload);
 app.use("/api/documents", documntroute);
 app.use("/api/admin", adminroute);
+
+//web admin routes
+
+app.use("/api/v1/adminweb/customers", admin_customers);
+app.use("/api/v1/adminweb/orders", admin_orders);
+app.use("/api/v1/adminweb/products", hubs_product);
+
 
 
 // set port, listen for requests
