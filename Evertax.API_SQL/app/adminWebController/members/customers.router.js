@@ -30,6 +30,14 @@ router.route('/members').post((request, response) => {
     response.status(201).json(data);
   })
 })
+router.route('/addAdminUser').post((request, response) => {
+  let member = { ...request.body }
+  console.log(member)
+  Db.addSecuirtyUser(member).then(data => {
+    response.status(201).json(data);
+
+  })
+})
 // need to change error message in sp for wrong data
 router.route('/member/Login').post((request, response) => {
   let member = { ...request.body }

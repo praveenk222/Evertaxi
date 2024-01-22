@@ -6,19 +6,35 @@ async function connectToDatabase() {
     const pool = await sql.connect(config);
     return pool;
   } catch (error) {
-    throw new Error(`Error connecting to the database: ${error.message}`);
+    return result.error.message
+    console.log(`Error executing query: ${error.message}`);
   }
 }
 
 
-async function getProducts() {
+async function getProducts(data) {
   try {
     const pool = await connectToDatabase();
     const result = await pool.request()
+    .input('type',data.ProductType)
     .execute('usp_GetProductListWithCounts_webadmin')
     return result.recordset;
   } catch (error) {
-    throw new Error(`Error executing query: ${error.message}`);
+    return result.error.message
+    console.log(`Error executing query: ${error.message}`);
+  } finally {
+    sql.close();
+  }
+}
+async function getHubs() {
+  try {
+    const pool = await connectToDatabase();
+    const result = await pool.request()
+    .execute('usp_GetHubListWithCounts_webadmin')
+    return result.recordset;
+  } catch (error) {
+    return result.error.message
+    console.log(`Error executing query: ${error.message}`);
   } finally {
     sql.close();
   }
@@ -69,11 +85,10 @@ async  function  addProduct(pr) {
 
     .execute('USP_insert_product_webAdmin');
 
-    return     {'status':true,'message': insertProduct.recordsets}
+    return     {'status':true,'message': insertProduct.recordset[0]}
   
 } catch (error) {
    return {'status':false,'message':error.message}
-  throw new Error(`Error executing query: ${error.message}`);
 } finally {
   sql.close();
 }
@@ -95,11 +110,10 @@ async  function  addHub(pr) {
 
     .execute('USP_insert_Hub_webAdmin');
 
-    return     {'status':true,'message': insertProduct.recordsets}
+    return     {'status':true,'message': insertProduct.recordset[0]}
   
 } catch (error) {
    return {'status':false,'message':error.message}
-  throw new Error(`Error executing query: ${error.message}`);
 } finally {
   sql.close();
 }
@@ -175,5 +189,6 @@ module.exports = {
   getProductByBranchID : getProductByBranchID,
   getProductTime:getProductTime,
   searchProduct:searchProduct,
-  addHub:addHub
+  addHub:addHub,
+  getHubs:getHubs
 }

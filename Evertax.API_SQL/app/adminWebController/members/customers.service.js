@@ -58,6 +58,29 @@ async function addMember(Member) {
       .input('Gender', sql.SmallInt, Member.Gender)
       .input('DateofBirth', sql.DateTime, Member.DateofBirth)
       .execute('Operation.usp_MembersSave');
+      console.log(insertProduct.recordsets[0][0])
+    return insertProduct.recordsets[0][0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+async function addSecuirtyUser(Member) {
+  try {
+
+    let pool = await sql.connect(config);
+    let insertProduct = await pool.request()
+    .input('UserID', sql.NVarChar, Member.UserID)
+    .input('UserName', sql.NVarChar, Member.UserName)
+    .input('Password', sql.NVarChar, Member.Password)
+      .input('Email', sql.NVarChar, Member.EmailID)
+      .input('MobileNumber', sql.NVarChar, Member.MobileNo)
+      .input('RoleCode', sql.NVarChar, Member.RoleCode)
+      .input('CreatedBy', sql.NVarChar, Member.CreatedBy)
+      .input('ModifiedBy', sql.NVarChar, Member.ModifiedBy)
+      .input('IsActive', sql.Bit, Member.IsActive)
+      .input('LogInStatus', sql.Bit, Member.LogInStatus)
+      .execute('Security.usp_UsersSave');
       console.log(insertProduct.recordsets[0])
     return insertProduct.recordsets[0][0];
   }
@@ -336,6 +359,7 @@ module.exports = {
   getMembers: getMembers,
   getMember: getMember,
   addMember: addMember,
+  addSecuirtyUser: addSecuirtyUser,
   memberLogin: usp_MemberLogin,
   getlistbymobileno: getlistbymobileno,
   getCredentials: getCredentials,
