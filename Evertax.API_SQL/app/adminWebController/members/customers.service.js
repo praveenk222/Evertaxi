@@ -3,6 +3,7 @@ const sql = require('mssql');
 
 const fs = require('fs');
 const path = require('path');
+const spconfig=require('../../Models/storedproc_list')
 
 async function getMembers() {
   try {
@@ -65,6 +66,7 @@ async function addMember(Member) {
     console.log(err);
   }
 }
+//scuriyt user
 async function addSecuirtyUser(Member) {
   try {
 
@@ -88,6 +90,21 @@ async function addSecuirtyUser(Member) {
     console.log(err);
   }
 }
+async function getsecuirtyUsers(data) {
+  try {
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('UserID', data)
+      .execute(`security.usp_UsersSelect`);
+    const employees = result.recordset;
+  return employees
+  } catch (error) {
+    console.log(error)
+    return error  
+  }
+}
+
+//scuriyt user
 async function usp_MemberLogin(Member) {
   try {
     console.log(Member)
@@ -170,24 +187,22 @@ async function getCredentials() {
 }
 
 
-async function saveUserSecurityPin(data) {
-  try {
-    
-    console.log(data)
-    if(data.pin == null){
-      data.pin=1234
-    }
+async function saveUserRole(data) {
+  try {  
+  
     let pool = await sql.connect(config);
+    const saveuserRoleSp=spconfig.main.saveRole;
+    console.log(saveuserRoleSp)
     const result = await pool.request()
-      .input('userid', data.userid)
-      .input('pin', data.pin)
-      .input('iskyc', data.iskyc)
-      .execute(`usp_setMemberPin`);
+      .input('RoleCode', data.RoleCode)
+      .input('RoleDescription', data.RoleDescription)
+      .input('IsActive', data.IsActive)
+      .execute(saveuserRoleSp);
     const employees = result.recordset[0];
     return employees;
   } catch (error) {
-    console.log(error)
     // res.status(500).json(error);
+    return error.message;
   }
 }
 
@@ -291,86 +306,14 @@ async function getAddressByAdID(data) {
     return error  
   }
 }
-async function saveTrustedContacts(Member) {
-  try {
-  
 
-    let pool = await sql.connect(config);
-    let insertProduct = await pool.request()
-      .input('ID', sql.Int, Member.ID)
-      .input('UserID', sql.BigInt, Member.UserID)
-      .input('MobileNo', sql.NVarChar, Member.MobileNo)
-      .input('FirstName', sql.NVarChar, Member.FirstName)
-      .input('LastName', sql.NVarChar, Member.LastName)
-      .input('MemberType', sql.Int, Member.MemberType)
-      .input('IsActive', sql.Bit, Member.IsActive)
-      .execute('Operation.usp_TrustedContacts ');
-      console.log(insertProduct.recordsets[0])
-    return insertProduct.recordsets[0][0];
-  }
-  catch (err) {
-    console.log(err);
-    return err.message
-  }
-}
-async function getTrustedMembers(userid) {
-  try {
-    let pool = await sql.connect(config);
-    let product = await pool.request()
-    .input('input_parameter', sql.Int, userid)
-    .query("SELECT *   FROM [Operation].[UserFamilyContacts] where IsActive=1 AND userid = @input_parameter ");
-    return product.recordsets[0];
-  }
-  catch (error) {
-    console.log(error);
-  }
-}
-async function removeUser(data) {
-  try {
-    let pool = await sql.connect(config);
-    const result = await pool.request()
-      .input('UserID', data.UserID)
-      .input('IsActive', data.IsActive)
-      .execute(`usp_MembersRemove`);
-    const employees = result.recordset[0];
-  
-    return employees;
-  } catch (error) {
-    console.log(error)
-    // res.status(500).json(error);
-  }
-}
-async function CheckUserActions(data) {
-  try {
-    let pool = await sql.connect(config);
-    const result = await pool.request()
-      .input('UserID', data)
-      .execute(`usp_CheckUserAccess`);
-    const employees = result.recordset[0];
-  
-    return employees;
-  } catch (error) {
-    console.log(error)
-    // res.status(500).json(error);
-  }
-}
+
 
 module.exports = {
-  getMembers: getMembers,
-  getMember: getMember,
-  addMember: addMember,
   addSecuirtyUser: addSecuirtyUser,
-  memberLogin: usp_MemberLogin,
-  getlistbymobileno: getlistbymobileno,
   getCredentials: getCredentials,
   updateuserKyc:updateuserKyc,
-  saveUserSecurityPin:saveUserSecurityPin,
-  addUserAddress:addUserAddress,
-  getuseraddressbyID:getaddresslistbyID,
-  deleteUserAddress:deleteUserAddress,
-  getAddressByAdID:getAddressByAdID,
-  saveTrustedContacts:saveTrustedContacts,
-  getTrustedMembers:getTrustedMembers,
-  removeUser:removeUser,
-  CheckUserActions:CheckUserActions
+  getsecuirtyUsers:getsecuirtyUsers,
+  saveUserRole:saveUserRole,
+  saveUserRole:saveUserRole
 }

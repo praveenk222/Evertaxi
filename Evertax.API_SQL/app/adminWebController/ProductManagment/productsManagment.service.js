@@ -1,6 +1,6 @@
 var  config = require('../../config/db.config');
 const  sql = require('mssql');
-
+const spname=require('../../Models/storedproc_list')
 async function connectToDatabase() {
   try {
     const pool = await sql.connect(config);
@@ -15,9 +15,10 @@ async function connectToDatabase() {
 async function getProducts(data) {
   try {
     const pool = await connectToDatabase();
+    let spName=spname.main.facebook
     const result = await pool.request()
     .input('type',data.ProductType)
-    .execute('usp_GetProductListWithCounts_webadmin')
+    .execute(spName)
     return result.recordset;
   } catch (error) {
     return result.error.message
