@@ -13,13 +13,11 @@ router.use((request, response, next) => {
 
 
 
-// router.route('/members').post((request, response) => {
-//   let member = { ...request.body }
-//   console.log(member)
-//   Db.addMember(member).then(data => {
-//     response.status(201).json(data);
-//   })
-// })
+router.route('/').get((request, response) => {
+  Db.getMembers().then(data => {
+    response.status(200).json(data);
+  })
+})
 router.route('/addAdminUser').post((request, response) => {
   let member = { ...request.body }
   console.log(member)

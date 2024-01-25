@@ -9,7 +9,7 @@ async function getMembers() {
   try {
     let pool = await sql.connect(config);
     let products = await pool.request().query("SELECT *   FROM operation.member  ");
-    return products.recordsets;
+    return products.recordsets[0];
   }
   catch (error) {
     console.log(error);
@@ -315,5 +315,6 @@ module.exports = {
   updateuserKyc:updateuserKyc,
   getsecuirtyUsers:getsecuirtyUsers,
   saveUserRole:saveUserRole,
-  saveUserRole:saveUserRole
+  saveUserRole:saveUserRole,
+  getMembers:getMembers
 }
