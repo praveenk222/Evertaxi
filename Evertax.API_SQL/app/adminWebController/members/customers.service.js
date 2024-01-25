@@ -105,17 +105,15 @@ async function getsecuirtyUsers(data) {
 }
 
 //scuriyt user
-async function usp_MemberLogin(Member) {
+async function SecurityUserLogin(Member) {
   try {
     console.log(Member)
     let pool = await sql.connect(config);
     const result = await pool.request()
-      .input('EmailID', Member.EmailID)
-      .input('MobileNo', Member.MobileNo)
+      .input('UserID', Member.EmailID)
       .input('Password', Member.Password)
-      .input('VendorID', Member.VendorID)
-      .execute(`[Operation].[usp_MemberLogin]`);
-    const employees = result.recordset;
+      .execute(`usp_adminLogin`);
+    const employees = result.recordset[0];
     return employees;
   } catch (error) {
     console.log(error)
@@ -316,5 +314,6 @@ module.exports = {
   getsecuirtyUsers:getsecuirtyUsers,
   saveUserRole:saveUserRole,
   saveUserRole:saveUserRole,
-  getMembers:getMembers
+  getMembers:getMembers,
+  SecurityUserLogin:SecurityUserLogin
 }
