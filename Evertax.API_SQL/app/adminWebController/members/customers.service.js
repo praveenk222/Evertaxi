@@ -105,16 +105,36 @@ async function getsecuirtyUsers(data) {
 }
 
 //scuriyt user
-async function SecurityUserLogin(Member) {
+async function SecurityUserLoginold(Member) {
   try {
     console.log(Member)
     let pool = await sql.connect(config);
     const result = await pool.request()
-      .input('UserID', Member.EmailID)
-      .input('Password', Member.Password)
+      .input('UserID', sql.NVarChar, Member.EmailID)
+      .input('Password',sql.NVarChar, Member.Password)
       .execute(`usp_adminLogin`);
     const employees = result.recordset[0];
+    console.log(employees)
     return employees;
+  } catch (error) {
+    console.log(error)
+    // res.status(500).json(error);
+  }
+}
+async function SecurityUserLogin(Member) {
+  try {
+    console.log(Member)
+    let pool = await sql.connect(config);
+    let result = await pool.request()
+    .input('eid', sql.NVarChar, Member.UserID)
+    .input('pid', sql.NVarChar, Member.Password)
+    .query("SELECT * from [Security].[Users] where Email = @eid AND Password=@pid");
+    const employees = result.recordset[0];
+    console.log(result)
+    if(result.recordset.length == 0){
+      return {status:false,message:'Failed to login'}
+    }
+    return {status:true,message:'Login done',data:employees};
   } catch (error) {
     console.log(error)
     // res.status(500).json(error);
