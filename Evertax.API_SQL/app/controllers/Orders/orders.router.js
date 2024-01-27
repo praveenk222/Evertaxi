@@ -76,5 +76,11 @@ router.route('/orders').get((request, response) => {
     res.status(200).json(data);
   })
 })
+ router.route('/cancelOrder/:id').get((req,res)=>{
+  console.log('')
+  Db.cancelOrder(req.params.id).then(data =>{
+    res.status(200).json(data);
+  })
+})
 
 module.exports = router;

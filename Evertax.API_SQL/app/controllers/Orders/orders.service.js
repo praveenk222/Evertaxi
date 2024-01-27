@@ -183,7 +183,13 @@ async function getCurrentBookingSummaryofUser(data){
     console.log(result.recordset)
   return result.recordset[0];
 }
-
+async function cancelOrder(orderid){
+  let pool = await sql.connect(config);
+  const result=await pool.request()
+    .input('OrderID',sql.Int,orderid)
+    .execute(`usp_cancelOrder`);
+  return result.recordset[0];
+}
 module.exports = {
   getOrders:  getOrders,
   getOrder:  getOrder,
@@ -195,5 +201,6 @@ module.exports = {
   getOrderSummeryByOrderID:getOrderSummeryByOrderID,
   getBookingSummaryByBookingID:getBookingSummaryByBookingID,
   getUserCurrentBooking:getCurrentBookingSummaryofUser,
-  extendCurrentOrder:Order_Update_Booking_Single
+  extendCurrentOrder:Order_Update_Booking_Single,
+  cancelOrder:cancelOrder
 }
