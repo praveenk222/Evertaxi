@@ -145,9 +145,7 @@ async function getNotification() {
     let pool = await sql.connect(config);
     let result = await pool.request()
     .execute("Master.usp_NotificationList");
-    const employees = result.recordset[0];
-    console.log(result.recordset.length)
-   
+    const employees = result.recordsets[0];
     return {status:true,message:'Success',data:employees};
   } catch (error) {
     return {status:false,message:'failed ',data:error.message};
@@ -163,9 +161,8 @@ async function saveNotification(Member) {
     .input('NotificationName', sql.NVarChar, Member.NotificationName)
     .input('Description', sql.NVarChar, Member.Description)
     .input('UserID', sql.NVarChar, Member.UserID)
-    .execute("Master.usp_NotificationInsert");
+    .execute("Master.[usp_NotificationSave]");
     const employees = result.recordset[0];
-    console.log(result.recordset.length)
     if(result.recordset.length == 0){
       return {status:false,message:'Failed to login'}
     }
