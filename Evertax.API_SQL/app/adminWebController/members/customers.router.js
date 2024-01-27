@@ -15,8 +15,11 @@ router.use((request, response, next) => {
 
 router.route('/').get((request, response) => {
   Db.getMembers().then(data => {
-    response.status(200).json(data);
+    response.status(200).json({'id':1,'status':true,'message':data});
+  },(error=>{
+    response.status(500).json({'id':0,'status':false,'message':error.message})
   })
+  )
 })
 router.route('/addAdminUser').post((request, response) => {
   let member = { ...request.body }
@@ -26,11 +29,19 @@ router.route('/addAdminUser').post((request, response) => {
 
   })
 })
+router.route('/savenotification').post((request, response) => {
+  let member = { ...request.body }
+  Db.saveNotification(member).then(data => {
+    response.status(201).json(data);
+
+  })
+})
 router.route('/adminLogin').post((request, response) => {
   let member = { ...request.body }
   console.log(member)
   Db.SecurityUserLogin(member).then(data => {
-    response.status(201).json(data);
+    console.log(data)
+    response.status(200).json(data);
 
   })
 })
@@ -40,6 +51,11 @@ router.route('/adminLogin').post((request, response) => {
 
 router.route('/getsecurityusers/:id').get((req, res) => {
   Db.getsecuirtyUsers(req.params.id).then(data =>
+     { res.status(200).json(data) }
+     )
+})
+router.route('/getnotification').get((req, res) => {
+  Db.getNotification().then(data =>
      { res.status(200).json(data) }
      )
 })

@@ -130,13 +130,49 @@ async function SecurityUserLogin(Member) {
     .input('pid', sql.NVarChar, Member.Password)
     .query("SELECT * from [Security].[Users] where Email = @eid AND Password=@pid");
     const employees = result.recordset[0];
-    console.log(result)
+    console.log(result.recordset.length)
     if(result.recordset.length == 0){
       return {status:false,message:'Failed to login'}
     }
     return {status:true,message:'Login done',data:employees};
   } catch (error) {
     console.log(error)
+    // res.status(500).json(error);
+  }
+}
+async function getNotification() {
+  try {
+    let pool = await sql.connect(config);
+    let result = await pool.request()
+    .execute("Master.usp_NotificationList");
+    const employees = result.recordset[0];
+    console.log(result.recordset.length)
+   
+    return {status:true,message:'Success',data:employees};
+  } catch (error) {
+    return {status:false,message:'failed ',data:error.message};
+
+    // res.status(500).json(error);
+  }
+}
+async function saveNotification(Member) {
+  try {
+    console.log(Member)
+    let pool = await sql.connect(config);
+    let result = await pool.request()
+    .input('NotificationName', sql.NVarChar, Member.NotificationName)
+    .input('Description', sql.NVarChar, Member.Description)
+    .input('UserID', sql.NVarChar, Member.UserID)
+    .execute("Master.usp_NotificationInsert");
+    const employees = result.recordset[0];
+    console.log(result.recordset.length)
+    if(result.recordset.length == 0){
+      return {status:false,message:'Failed to login'}
+    }
+    return {status:true,message:'Login done',data:employees};
+  } catch (error) {
+    return {status:false,message:'failed done',data:error.message};
+
     // res.status(500).json(error);
   }
 }
@@ -335,5 +371,7 @@ module.exports = {
   saveUserRole:saveUserRole,
   saveUserRole:saveUserRole,
   getMembers:getMembers,
-  SecurityUserLogin:SecurityUserLogin
+  SecurityUserLogin:SecurityUserLogin,
+  saveNotification:saveNotification,
+  getNotification:getNotification
 }

@@ -21,7 +21,7 @@ async function getProducts(data) {
     .execute(spName)
     return result.recordset;
   } catch (error) {
-    return result.error.message
+    return error.message
     console.log(`Error executing query: ${error.message}`);
   } finally {
     sql.close();
@@ -34,7 +34,7 @@ async function getHubs() {
     .execute('usp_GetHubListWithCounts_webadmin')
     return result.recordset;
   } catch (error) {
-    return result.error.message
+    return error.message
     console.log(`Error executing query: ${error.message}`);
   } finally {
     sql.close();

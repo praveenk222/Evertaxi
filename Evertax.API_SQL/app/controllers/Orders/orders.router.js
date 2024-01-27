@@ -53,6 +53,7 @@ router.route('/orders').get((request, response) => {
 })
  router.route('/getorderbyorderid/:id').get((req,res)=>{
    let data=req.params.id;
+   console.log(data)
   Db.getOrderByOrderID(data).then(data =>{
     res.status(200).json(data);
   })
