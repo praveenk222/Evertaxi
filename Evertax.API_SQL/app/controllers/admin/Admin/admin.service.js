@@ -108,7 +108,7 @@ async  function  addoffersnew(Member) {
     let  pool = await  sql.connect(config);
     let  insertoffersndcoupns = await  pool.request()
     
-    .input('DiscountPercentage', sql.Decimal, Member.DiscountPercentage)
+    .input('DiscountPercentage',  Member.DiscountPercentage)
     .input('CouponCode', sql.NVarChar, Member.CouponCode)
     .input('ExpiryDate', sql.DateTime, Member.EndDate)
     .input('StartDate', sql.DateTime, Member.StartDate)
@@ -116,7 +116,7 @@ async  function  addoffersnew(Member) {
     .input('UserID', sql.BigInt, Member.UserID)
     .input('ProductID', sql.BigInt, Member.ProductID)
     .input('OfferName', sql.NVarChar, Member.OfferName)
-    .input('MaxAmount', sql.Decimal, Member.MaxAmount)
+    .input('MaxAmount',  Member.MaxAmount)
     .input('Description', sql.NVarChar, Member.Description)
     .input('Demography', sql.NVarChar, Member.Demography)
     .input('Age', sql.Int, Member.Age)
