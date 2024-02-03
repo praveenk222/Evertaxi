@@ -39,6 +39,12 @@ router.route('/offers/getall').get((request, response) => {
       response.status(201).json(data);
     })
   })
+  router.route('/promocode/save').post((request, response) => {
+    let  payload = { ...request.body }
+    Db.addoffersnew(payload).then(data  => {      
+      response.status(201).json(data);
+    })
+  })
   router.route('/questions').get((request, response) => {
     Db.getquestions().then(data  => {
       response.status(200).json(data);

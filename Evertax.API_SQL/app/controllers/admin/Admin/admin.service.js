@@ -103,6 +103,30 @@ async  function  getOffersSearch(data) {
     console.log(err);
   }
 }
+async  function  addoffersnew(Member) {
+  try {
+    let  pool = await  sql.connect(config);
+    let  insertoffersndcoupns = await  pool.request()
+    .input('DiscountPercentage', sql.Decimal, Member.DiscountPercentage)
+    .input('CouponCode', sql.NVarChar, Member.CouponCode)
+    .input('ExpiryDate', sql.DateTime, Member.ExpiryDate)
+    .input('StartDate', sql.DateTime, Member.StartDate)
+    .input('EndDate', sql.DateTime, Member.EndDate)
+    .input('UserID', sql.BigInt, Member.UserID)
+    .input('ProductID', sql.BigInt, Member.ProductID)
+    .input('OfferName', sql.NVarChar, Member.OfferName)
+    .input('MaxAmount', sql.Decimal, Member.MaxAmount)
+    .input('Description', sql.NVarChar, Member.Description)
+    .execute('usp_PromoCodeInsert');
+    console.log(Member)
+    console.log('122')
+    return {'status':true,'data':insertoffersndcoupns.recordsets} ;
+  }
+  catch (err) {
+    console.log(err);
+    return {'status':false,'message':err.message}
+  }
+}
 module.exports = {
   addoffersndcoupns:  addoffersndcoupns,
   getoffersndcoupnsByID : getoffersndcoupnsByID,
@@ -111,5 +135,6 @@ module.exports = {
   getoffers : getoffers,
   getcoupns : getcoupns,
   getquestions:getquestions,
-  getOffersSearch:getOffersSearch
+  getOffersSearch:getOffersSearch,
+  addoffersnew:addoffersnew
 }

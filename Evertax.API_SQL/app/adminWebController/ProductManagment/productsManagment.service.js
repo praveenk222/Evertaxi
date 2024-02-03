@@ -108,6 +108,8 @@ async  function  addHub(pr) {
     .input('CloseTime',  pr.CloseTime)
     .input('ProfileImage', sql.NVarChar, pr.ProfileImage)
     .input('BranchType', sql.SmallInt, pr.BranchType)
+    .input('Longitude', pr.Longitude)
+    .input('Latitude', pr.Latitude)
 
     .execute('USP_insert_Hub_webAdmin');
 
@@ -149,6 +151,7 @@ async  function  getProductByID(data) {
     console.log(err);
   }
 }
+
 async  function  getProductTime() {
   try {
     let  pool = await  sql.connect(config);
@@ -178,6 +181,18 @@ async function searchProduct(data){
   }
 }
 
+//config
+async  function  getConfigList(data) {
+  try {
+    let  pool = await  sql.connect(config);
+    let  insertProduct = await  pool.request()
+    .execute(`[Config].[usp_LookupList]`);
+    return  insertProduct.recordsets[0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 
 
 
@@ -191,5 +206,6 @@ module.exports = {
   getProductTime:getProductTime,
   searchProduct:searchProduct,
   addHub:addHub,
-  getHubs:getHubs
+  getHubs:getHubs,
+  getConfigList:getConfigList
 }

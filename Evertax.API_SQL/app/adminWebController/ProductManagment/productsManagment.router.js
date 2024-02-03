@@ -41,6 +41,17 @@ router.route('/gethubs').get((request, response) => {
   }
 
 })
+router.route('/getLookup').get((request, response) => {
+  try {
+    Db.getConfigList().then((data) => {
+      response.json({ "id": 1, "status": true, "message": data });
+
+    })
+  } catch (error) {
+    response.json({ "id": 1, "status": true, "message": error });
+  }
+
+})
 
 router.route('/bybranch').post((request, response) => {
   Db.getProductByBranchID(request.body).then((data) => {
