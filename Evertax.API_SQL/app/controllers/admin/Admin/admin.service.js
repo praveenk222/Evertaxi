@@ -117,6 +117,8 @@ async  function  addoffersnew(Member) {
     .input('OfferName', sql.NVarChar, Member.OfferName)
     .input('MaxAmount', sql.Decimal, Member.MaxAmount)
     .input('Description', sql.NVarChar, Member.Description)
+    .input('Demography', sql.NVarChar, Member.Demography)
+    .input('Age', sql.Int, Member.Age)
     .execute('usp_PromoCodeInsert');
     console.log(Member)
     console.log('122')
