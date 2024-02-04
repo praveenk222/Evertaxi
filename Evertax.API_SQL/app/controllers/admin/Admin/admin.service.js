@@ -40,6 +40,20 @@ async  function  addoffersndcoupns(Member) {
     console.log(err);
   }
 }
+async  function  removeoffers(Member) {
+  try {
+    let  pool = await  sql.connect(config);
+    let  data = await  pool.request()
+    .input('CouponID', sql.Int, Member.CouponID)
+    .input('OfferID', sql.Int, Member.OfferID)
+    .execute('usp_removeOffers');
+    console.log(data.recordsets)
+    return  data.recordsets[0][0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 async  function  getAlloffersndcoupnss() {
   try {
     let  pool = await  sql.connect(config);
@@ -106,9 +120,8 @@ async  function  getOffersSearch(data) {
 async  function  addoffersnew(Member) {
   try {
     let  pool = await  sql.connect(config);
-    let  insertoffersndcoupns = await  pool.request()
-    
-    .input('DiscountPercentage',  Member.DiscountPercentage)
+    let  insertoffersndcoupns = await  pool.request()    
+    .input('DiscountPercentage', sql.Decimal, Member.DiscountPercentage)
     .input('CouponCode', sql.NVarChar, Member.CouponCode)
     .input('ExpiryDate', sql.DateTime, Member.EndDate)
     .input('StartDate', sql.DateTime, Member.StartDate)
@@ -116,13 +129,40 @@ async  function  addoffersnew(Member) {
     .input('UserID', sql.BigInt, Member.UserID)
     .input('ProductID', sql.BigInt, Member.ProductID)
     .input('OfferName', sql.NVarChar, Member.OfferName)
-    .input('MaxAmount',  Member.MaxAmount)
+    .input('MaxAmount', sql.Decimal, Member.MaxAmount)
     .input('Description', sql.NVarChar, Member.Description)
     .input('Demography', sql.NVarChar, Member.Demography)
     .input('Age', sql.Int, Member.Age)
     .execute('usp_PromoCodeInsert');
     console.log(Member)
     console.log('122')
+    return {'status':true,'data':insertoffersndcoupns.recordsets} ;
+  }
+  catch (err) {
+    console.log(err);
+    return {'status':false,'message':err.message}
+  }
+}
+async  function  updateoffers(Member) {
+  try {
+    let  pool = await  sql.connect(config);
+    let  insertoffersndcoupns = await  pool.request()    
+    .input('DiscountPercentage', sql.Decimal, Member.DiscountPercentage)
+    .input('CouponCode', sql.NVarChar, Member.CouponCode)
+    .input('ExpiryDate', sql.DateTime, Member.EndDate)
+    .input('StartDate', sql.DateTime, Member.StartDate)
+    .input('EndDate', sql.DateTime, Member.EndDate)
+    .input('UserID', sql.BigInt, Member.UserID)
+    .input('ProductID', sql.BigInt, Member.ProductID)
+    .input('OfferName', sql.NVarChar, Member.OfferName)
+    .input('MaxAmount', sql.Decimal, Member.MaxAmount)
+    .input('Description', sql.NVarChar, Member.Description)
+    .input('Demography', sql.NVarChar, Member.Demography)
+    .input('Age', sql.Int, Member.Age)
+    .input('CouponID', sql.Int, Member.CouponID)
+    .input('OfferID', sql.Int, Member.OfferID)
+    .execute('usp_PromoCodeUpdate');
+    console.log(Member)
     return {'status':true,'data':insertoffersndcoupns.recordsets} ;
   }
   catch (err) {
@@ -139,5 +179,7 @@ module.exports = {
   getcoupns : getcoupns,
   getquestions:getquestions,
   getOffersSearch:getOffersSearch,
-  addoffersnew:addoffersnew
+  addoffersnew:addoffersnew,
+  updateoffers:updateoffers,
+  removeoffers:removeoffers
 }
