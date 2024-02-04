@@ -167,7 +167,7 @@ async  function  updateoffers(Member) {
     .input('ProductID', sql.BigInt, Member.ProductID)
     .input('OfferName', sql.NVarChar, Member.OfferName)
     .input('MaxAmount', sql.Decimal, Member.MaxAmount)
-    .input('Description', sql.NVarChar, Member.Description)
+    .input('Description', sql.NVarChar, Member.OfferDescription)
     .input('Demography', sql.NVarChar, Member.Demography)
     .input('Age', sql.Int, Member.Age)
     .input('CouponID', sql.Int, Member.CouponID)
