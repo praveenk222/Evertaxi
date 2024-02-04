@@ -62,6 +62,11 @@ router.route('/offers/getall').get((request, response) => {
       response.status(200).json(data);
     })
   })
+  router.route('/getComplains').get((request, response) => {
+    Db.getComplains().then(data  => {
+      response.status(200).json(data);
+    })
+  })
 
   router.route('/offers/search').post((request, response) => {
     let  payload = { ...request.body }

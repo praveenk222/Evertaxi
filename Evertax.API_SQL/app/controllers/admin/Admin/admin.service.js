@@ -101,6 +101,17 @@ async  function  getquestions() {
     console.log(error);
   }
 }
+async  function  getComplains() {
+  try {
+    let  pool = await  sql.connect(config);
+    let  offersndcoupns = await  pool.request()
+    .execute(`usp_GetAllComplains`);
+    return  offersndcoupns.recordsets[0];
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
 async  function  getOffersSearch(data) {
   try {
     let  pool = await  sql.connect(config);
@@ -181,5 +192,6 @@ module.exports = {
   getOffersSearch:getOffersSearch,
   addoffersnew:addoffersnew,
   updateoffers:updateoffers,
-  removeoffers:removeoffers
+  removeoffers:removeoffers,
+  getComplains:getComplains
 }
