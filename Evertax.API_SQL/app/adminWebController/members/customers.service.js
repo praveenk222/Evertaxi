@@ -3,7 +3,7 @@ const sql = require('mssql');
 
 const fs = require('fs');
 const path = require('path');
-const spconfig=require('../../Models/storedproc_list')
+const spconfig = require('../../Models/storedproc_list')
 
 async function getMembers() {
   try {
@@ -59,7 +59,7 @@ async function addMember(Member) {
       .input('Gender', sql.SmallInt, Member.Gender)
       .input('DateofBirth', sql.DateTime, Member.DateofBirth)
       .execute('Operation.usp_MembersSave');
-      console.log(insertProduct.recordsets[0][0])
+    console.log(insertProduct.recordsets[0][0])
     return insertProduct.recordsets[0][0];
   }
   catch (err) {
@@ -72,9 +72,9 @@ async function addSecuirtyUser(Member) {
 
     let pool = await sql.connect(config);
     let insertProduct = await pool.request()
-    .input('UserID', sql.NVarChar, Member.UserID)
-    .input('UserName', sql.NVarChar, Member.UserName)
-    .input('Password', sql.NVarChar, Member.Password)
+      .input('UserID', sql.NVarChar, Member.UserID)
+      .input('UserName', sql.NVarChar, Member.UserName)
+      .input('Password', sql.NVarChar, Member.Password)
       .input('Email', sql.NVarChar, Member.EmailID)
       .input('MobileNumber', sql.NVarChar, Member.MobileNo)
       .input('RoleCode', sql.NVarChar, Member.RoleCode)
@@ -83,7 +83,7 @@ async function addSecuirtyUser(Member) {
       .input('IsActive', sql.Bit, Member.IsActive)
       .input('LogInStatus', sql.Bit, Member.LogInStatus)
       .execute('Security.usp_UsersSave');
-      console.log(insertProduct.recordsets[0])
+    console.log(insertProduct.recordsets[0])
     return insertProduct.recordsets[0][0];
   }
   catch (err) {
@@ -97,10 +97,10 @@ async function getsecuirtyUsers(data) {
       .input('UserID', data)
       .execute(`security.usp_UsersSelect`);
     const employees = result.recordset;
-  return employees
+    return employees
   } catch (error) {
     console.log(error)
-    return error  
+    return error
   }
 }
 
@@ -111,7 +111,7 @@ async function SecurityUserLoginold(Member) {
     let pool = await sql.connect(config);
     const result = await pool.request()
       .input('UserID', sql.NVarChar, Member.EmailID)
-      .input('Password',sql.NVarChar, Member.Password)
+      .input('Password', sql.NVarChar, Member.Password)
       .execute(`usp_adminLogin`);
     const employees = result.recordset[0];
     console.log(employees)
@@ -123,18 +123,29 @@ async function SecurityUserLoginold(Member) {
 }
 async function SecurityUserLogin(Member) {
   try {
-    console.log(Member)
     let pool = await sql.connect(config);
     let result = await pool.request()
-    .input('eid', sql.NVarChar, Member.UserID)
-    .input('pid', sql.NVarChar, Member.Password)
-    .query("SELECT * from [Security].[Users] where Email = @eid AND Password=@pid");
+      .input('userid', sql.NVarChar, Member.UserID)
+      .input('password', sql.NVarChar, Member.Password)
+      .execute("usp_securityUserLogin");
     const employees = result.recordset[0];
-    console.log(result.recordset.length)
-    if(result.recordset.length == 0){
-      return {status:false,message:'Failed to login'}
+    console.log(employees.status)
+    //later change id for change status and message
+    if (employees.status != undefined) {
+
+      if (!employees.status) {
+
+        return employees;
+      } else {
+
+        return { status: true, message: 'Loggin done successfully!!', data: employees };
+      }
     }
-    return {status:true,message:'Login done',data:employees};
+    else {
+      return { status: true, message: 'Loggin done successfully!!', data: employees };
+
+
+    }
   } catch (error) {
     console.log(error)
     // res.status(500).json(error);
@@ -144,11 +155,11 @@ async function getNotification() {
   try {
     let pool = await sql.connect(config);
     let result = await pool.request()
-    .execute("Master.usp_NotificationList");
+      .execute("Master.usp_NotificationList");
     const employees = result.recordsets[0];
-    return {status:true,message:'Success',data:employees};
+    return { status: true, message: 'Success', data: employees };
   } catch (error) {
-    return {status:false,message:'failed ',data:error.message};
+    return { status: false, message: 'failed ', data: error.message };
 
     // res.status(500).json(error);
   }
@@ -158,17 +169,17 @@ async function saveNotification(Member) {
     console.log(Member)
     let pool = await sql.connect(config);
     let result = await pool.request()
-    .input('NotificationName', sql.NVarChar, Member.NotificationName)
-    .input('Description', sql.NVarChar, Member.Description)
-    .input('UserID', sql.NVarChar, Member.UserID)
-    .execute("Master.[usp_NotificationSave]");
+      .input('NotificationName', sql.NVarChar, Member.NotificationName)
+      .input('Description', sql.NVarChar, Member.Description)
+      .input('UserID', sql.NVarChar, Member.UserID)
+      .execute("Master.[usp_NotificationSave]");
     const employees = result.recordset[0];
-    if(result.recordset.length == 0){
-      return {status:false,message:'Failed to login'}
+    if (result.recordset.length == 0) {
+      return { status: false, message: 'Failed to login' }
     }
-    return {status:true,message:'Login done',data:employees};
+    return { status: true, message: 'Login done', data: employees };
   } catch (error) {
-    return {status:false,message:'failed done',data:error.message};
+    return { status: false, message: 'failed done', data: error.message };
 
     // res.status(500).json(error);
   }
@@ -239,10 +250,10 @@ async function getCredentials() {
 
 
 async function saveUserRole(data) {
-  try {  
-  
+  try {
+
     let pool = await sql.connect(config);
-    const saveuserRoleSp=spconfig.main.saveRole;
+    const saveuserRoleSp = spconfig.main.saveRole;
     console.log(saveuserRoleSp)
     const result = await pool.request()
       .input('RoleCode', data.RoleCode)
@@ -259,7 +270,7 @@ async function saveUserRole(data) {
 
 async function updateuserKyc(data) {
   try {
-    data.pin=0;
+    data.pin = 0;
     //default value 0 to update kyc status
     console.log(data)
 
@@ -279,25 +290,25 @@ async function updateuserKyc(data) {
 //add address
 async function addUserAddress(Member) {
   try {
-  
+
     let pool = await sql.connect(config);
     let insertProduct = await pool.request()
-      .input('AddressID',  Member.AddressID)
-      .input('LinkID',  Member.LinkID)
-      .input('AddressType',  Member.AddressType)
-      .input('HouseNo',  Member.HouseNo)
-      .input('Address1',  Member.Address1)
-      .input('Address2',  Member.Address2)
-      .input('Landmark',  Member.Landmark)
-      .input('City',  Member.City)
-      .input('ZipCode',  Member.ZipCode)
-      .input('AlternateNo',  Member.AlternateNo)
-      .input('State',  Member.State)
-      .input('Country',  Member.Country)
-      .input('Latitude',  Member.Latitude)
-      .input('Longitude',  Member.Longitude)
-      .input('IsDefault',  Member.IsDefault)
-      .input('LocationID',  Member.LocationID)
+      .input('AddressID', Member.AddressID)
+      .input('LinkID', Member.LinkID)
+      .input('AddressType', Member.AddressType)
+      .input('HouseNo', Member.HouseNo)
+      .input('Address1', Member.Address1)
+      .input('Address2', Member.Address2)
+      .input('Landmark', Member.Landmark)
+      .input('City', Member.City)
+      .input('ZipCode', Member.ZipCode)
+      .input('AlternateNo', Member.AlternateNo)
+      .input('State', Member.State)
+      .input('Country', Member.Country)
+      .input('Latitude', Member.Latitude)
+      .input('Longitude', Member.Longitude)
+      .input('IsDefault', Member.IsDefault)
+      .input('LocationID', Member.LocationID)
       .execute('[Operation].[usp_AddressSave]');
     return insertProduct.recordsets[0][0];
   }
@@ -313,9 +324,9 @@ async function getaddresslistbyID(data) {
     const result = await pool.request()
       .input('LinkID', data)
       .execute(`[Operation].[usp_AddressList]`);
-      // console.log(result.recordset)
+    // console.log(result.recordset)
     const employees = result.recordset;
-    if(employees == undefined){
+    if (employees == undefined) {
       return false;
     }
     console.log(employees)
@@ -334,7 +345,7 @@ async function deleteUserAddress(data) {
       .input('AddressID', data.AddressID)
       .execute(`[Operation].[usp_AddressDelete]`);
     const employees = result.recordset[0];
-    if(employees == undefined){
+    if (employees == undefined) {
       return false;
     }
     console.log(employees)
@@ -351,10 +362,10 @@ async function getAddressByAdID(data) {
       .input('AddressID', data)
       .execute(`usp_getAddressByAdID`);
     const employees = result.recordset;
-  return employees
+    return employees
   } catch (error) {
     console.log(error)
-    return error  
+    return error
   }
 }
 
@@ -363,12 +374,12 @@ async function getAddressByAdID(data) {
 module.exports = {
   addSecuirtyUser: addSecuirtyUser,
   getCredentials: getCredentials,
-  updateuserKyc:updateuserKyc,
-  getsecuirtyUsers:getsecuirtyUsers,
-  saveUserRole:saveUserRole,
-  saveUserRole:saveUserRole,
-  getMembers:getMembers,
-  SecurityUserLogin:SecurityUserLogin,
-  saveNotification:saveNotification,
-  getNotification:getNotification
+  updateuserKyc: updateuserKyc,
+  getsecuirtyUsers: getsecuirtyUsers,
+  saveUserRole: saveUserRole,
+  saveUserRole: saveUserRole,
+  getMembers: getMembers,
+  SecurityUserLogin: SecurityUserLogin,
+  saveNotification: saveNotification,
+  getNotification: getNotification
 }
