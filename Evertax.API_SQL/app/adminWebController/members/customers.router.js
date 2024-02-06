@@ -60,6 +60,9 @@ router.route('/getnotification').get((req, res) => {
      )
 })
 
+router.route('/adComplains').post((req, res) => {
+  Db.adComplains(req.body).then(data => { res.status(200).json(data) })
+})
 router.route('/updateUserKycStatus').post((req, res) => {
   Db.updateuserKyc(req.body).then(data => { res.status(200).json(data) })
 })

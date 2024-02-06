@@ -90,6 +90,28 @@ async function addSecuirtyUser(Member) {
     console.log(err);
   }
 }
+async function adComplains(Member) {
+  try {
+
+    let pool = await sql.connect(config);
+    let insertProduct = await pool.request()
+      .input('ID', sql.BigInt, Member.ID)
+      .input('UserID', sql.BigInt, Member.UserID)
+      .input('UserName', sql.NVarChar, Member.UserName)
+      .input('About', sql.NVarChar, Member.About)
+      .input('OpenDate', sql.DateTime, Member.OpenDate)
+      .input('ClosedDate', sql.DateTime, Member.ClosedDate)
+      .input('Location', sql.NVarChar, Member.Location)
+      .input('CreatedBy', sql.NVarChar, Member.CreatedBy)
+      .input('Status', sql.Bit, Member.Status)
+      .execute('[usp_Save_Complains]');
+    console.log(insertProduct.recordsets[0])
+    return insertProduct.recordsets[0][0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 async function getsecuirtyUsers(data) {
   try {
     let pool = await sql.connect(config);
@@ -381,5 +403,6 @@ module.exports = {
   getMembers: getMembers,
   SecurityUserLogin: SecurityUserLogin,
   saveNotification: saveNotification,
-  getNotification: getNotification
+  getNotification: getNotification,
+  adComplains:adComplains
 }
