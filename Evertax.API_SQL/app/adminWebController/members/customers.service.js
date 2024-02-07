@@ -403,6 +403,19 @@ async function getAddressByAdID(data) {
     return error
   }
 }
+async function getLeftNavbarByID(data) {
+  try {
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .input('UserID', data)
+      .execute(`security.getLeftNavbarByUserID`);
+    const employees = result.recordset;
+    return employees
+  } catch (error) {
+    console.log(error)
+    return error
+  }
+}
 
 
 
@@ -418,5 +431,6 @@ module.exports = {
   saveNotification: saveNotification,
   getNotification: getNotification,
   adComplains:adComplains,
-  getLeftnavbar:getLeftnavbar
+  getLeftnavbar:getLeftnavbar,
+  getLeftNavbarByID:getLeftNavbarByID
 }

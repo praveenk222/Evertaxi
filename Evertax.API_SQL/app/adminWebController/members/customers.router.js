@@ -78,6 +78,10 @@ router.route('/gettrustedcontacts/:id').get((req, res) => {
   console.log(req.params.id)
   Db.getTrustedMembers(req.params.id).then(data => { res.status(200).json(data) })
 })
+router.route('/getLeftNavbarByID/:id').get((req, res) => {
+  console.log(req.params.id)
+  Db.getLeftNavbarByID(req.params.id).then(data => { res.status(200).json(data) })
+})
 router.route('/getLeftnavbar').get((req, res) => {
   Db.getLeftnavbar().then(data => { res.status(200).json(data) })
 })
