@@ -403,6 +403,7 @@ async function getAddressByAdID(data) {
     return error
   }
 }
+
 async function getLeftNavbarByID(data) {
   try {
     let pool = await sql.connect(config);
@@ -416,7 +417,39 @@ async function getLeftNavbarByID(data) {
     return error
   }
 }
+async function saveTabAccess(data) {
 
+  try {     
+    let isSucess =false;
+    let pool = await sql.connect(config);
+    for (const item of data) {
+      const result = await pool.request()
+        .input('UserID', item.UserID)
+        .input('TabID', item.TabID)
+        .input('IsActive', item.IsActive)
+        .execute(`[Security].[usp.insert_UserTabAccess]`);
+     isSucess=result.recordset[0]
+      }
+    return isSucess
+  } catch (error) {
+    console.log(error)
+    return error
+  }
+
+
+}
+async function getDashboardData(data) {
+  try {
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .execute(`security.GetBookingStatisticsByHub`);
+    const employees = result.recordset;
+    return employees
+  } catch (error) {
+    console.log(error)
+    return error
+  }
+}
 
 
 module.exports = {
@@ -432,5 +465,7 @@ module.exports = {
   getNotification: getNotification,
   adComplains:adComplains,
   getLeftnavbar:getLeftnavbar,
-  getLeftNavbarByID:getLeftNavbarByID
+  getLeftNavbarByID:getLeftNavbarByID,
+  saveTabAccess:saveTabAccess,
+  getDashboardData:getDashboardData
 }

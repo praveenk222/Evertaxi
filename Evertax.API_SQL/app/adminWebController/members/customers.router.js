@@ -85,6 +85,12 @@ router.route('/getLeftNavbarByID/:id').get((req, res) => {
 router.route('/getLeftnavbar').get((req, res) => {
   Db.getLeftnavbar().then(data => { res.status(200).json(data) })
 })
+router.route('/getDashboardData').get((req, res) => {
+  Db.getDashboardData().then(data => { res.status(200).json(data) })
+})
+router.route('/saveUserTabAccess').post((req, res) => {
+  Db.saveTabAccess(req.body).then(data => { res.status(200).json(data) })
+})
 
 
 module.exports = router;
