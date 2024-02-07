@@ -72,7 +72,7 @@ async function addSecuirtyUser(Member) {
 
     let pool = await sql.connect(config);
     let insertProduct = await pool.request()
-      .input('UserID', sql.NVarChar, Member.UserID)
+      .input('UserID', sql.BigInt, Member.UserID)
       .input('UserName', sql.NVarChar, Member.UserName)
       .input('Password', sql.NVarChar, Member.Password)
       .input('Email', sql.NVarChar, Member.EmailID)
@@ -377,6 +377,19 @@ async function deleteUserAddress(data) {
     // res.status(500).json(error);
   }
 }
+// leftnavbar
+async function getLeftnavbar() {
+  try {
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .execute(`security.getLeftNavbar`);
+    const employees = result.recordset;
+    return employees
+  } catch (error) {
+    console.log(error)
+    return error
+  }
+}
 async function getAddressByAdID(data) {
   try {
     let pool = await sql.connect(config);
@@ -404,5 +417,6 @@ module.exports = {
   SecurityUserLogin: SecurityUserLogin,
   saveNotification: saveNotification,
   getNotification: getNotification,
-  adComplains:adComplains
+  adComplains:adComplains,
+  getLeftnavbar:getLeftnavbar
 }
