@@ -93,8 +93,14 @@ router.route('/getLeftnavbar').get((req, res) => {
 router.route('/getDashboardData').get((req, res) => {
   Db.getDashboardData().then(data => { res.status(200).json(data) })
 })
+router.route('/getPriceList').get((req, res) => {
+  Db.getPriceList().then(data => { res.status(200).json({status:true,message:data}) })
+})
 router.route('/saveUserTabAccess').post((req, res) => {
   Db.saveTabAccess(req.body).then(data => { res.status(200).json(data) })
+})
+router.route('/savePriceData').post((req, res) => {
+  Db.savePriceData(req.body).then(data => { res.status(200).json(data) })
 })
 
 

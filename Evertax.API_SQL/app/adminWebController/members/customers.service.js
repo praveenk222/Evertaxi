@@ -338,6 +338,7 @@ async function addUserAddress(Member) {
     console.log(err);
   }
 }
+
 //
 async function getaddresslistbyID(data) {
   try {
@@ -462,6 +463,35 @@ async function getAdminUserList() {
     return error
   }
 }
+async function getPriceList() {
+  try {
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .execute(`security.us_getPriceTable`);
+    const employees = result.recordset;
+    return employees
+  } catch (error) {
+    console.log(error)
+    return error
+  }
+}
+async function savePriceData(Member) {
+  try {
+
+    let pool = await sql.connect(config);
+    let insertProduct = await pool.request()
+      .input('PayTypes', Member.PayTypes)
+      .input('Amount', Member.Amount)
+      .input('IsActive', Member.IsActive)
+      .input('ProductID', Member.ProductID)
+      .input('ID', Member.ID)
+      .execute('[Security].[usp_savePriceTable]');
+    return insertProduct.recordsets[0][0];
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 
 
 module.exports = {
@@ -480,5 +510,7 @@ module.exports = {
   getLeftNavbarByID:getLeftNavbarByID,
   saveTabAccess:saveTabAccess,
   getDashboardData:getDashboardData,
-  getAdminUserList:getAdminUserList
+  getAdminUserList:getAdminUserList,
+  getPriceList:getPriceList,
+  savePriceData:savePriceData
 }
