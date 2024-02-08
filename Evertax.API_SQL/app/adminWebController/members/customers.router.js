@@ -59,6 +59,11 @@ router.route('/getnotification').get((req, res) => {
      { res.status(200).json(data) }
      )
 })
+router.route('/getAdminUserList').get((req, res) => {
+  Db.getAdminUserList().then(data =>
+     { res.status(200).json({status:true,id:0,message:data}) }
+     )
+})
 
 router.route('/adComplains').post((req, res) => {
   Db.adComplains(req.body).then(data => { res.status(200).json(data) })

@@ -450,6 +450,18 @@ async function getDashboardData(data) {
     return error
   }
 }
+async function getAdminUserList() {
+  try {
+    let pool = await sql.connect(config);
+    const result = await pool.request()
+      .execute(`security.usp_UsersList`);
+    const employees = result.recordset;
+    return employees
+  } catch (error) {
+    console.log(error)
+    return error
+  }
+}
 
 
 module.exports = {
@@ -467,5 +479,6 @@ module.exports = {
   getLeftnavbar:getLeftnavbar,
   getLeftNavbarByID:getLeftNavbarByID,
   saveTabAccess:saveTabAccess,
-  getDashboardData:getDashboardData
+  getDashboardData:getDashboardData,
+  getAdminUserList:getAdminUserList
 }
