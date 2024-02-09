@@ -237,7 +237,7 @@ async function sendsms(data) {
     }
   }
   catch (ex) {
-    throw new Error(ex.toString())
+    return (ex.toString())
   }
 }
 

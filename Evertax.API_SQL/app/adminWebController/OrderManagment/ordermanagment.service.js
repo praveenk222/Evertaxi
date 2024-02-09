@@ -186,6 +186,18 @@ async function getCurrentBookingSummaryofUser(data){
     console.log(result.recordset)
   return result.recordset[0];
 }
+async function getHubWisebooking(){
+  try {
+    let pool = await sql.connect(config);
+    console.log('tete')
+    const result=await pool.request()
+      .execute(`Security.usp_hubwiseBookings`);
+    return result.recordset[0];
+  } catch (error) {
+    return error.message
+  }
+
+}
 
 module.exports = {
   getOrders:  getOrders,
@@ -198,5 +210,6 @@ module.exports = {
   getOrderSummeryByOrderID:getOrderSummeryByOrderID,
   getBookingSummaryByBookingID:getBookingSummaryByBookingID,
   getUserCurrentBooking:getCurrentBookingSummaryofUser,
-  extendCurrentOrder:Order_Update_Booking_Single
+  extendCurrentOrder:Order_Update_Booking_Single,
+  getHubWisebooking:getHubWisebooking
 }

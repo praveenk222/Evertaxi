@@ -69,9 +69,28 @@ router.route('/:id').get((request, response) => {
     res.status(200).json(data);
   })
 })
+ router.route('/gethubwisebookings').get((req,res)=>{
+  console.log(req)
+  Db.getHubWisebooking().then(data =>{
+    res.status(200).json(data);
+  })
+});
+router.route('/gets').get((request, response) => {
+  try {
+    let id=request.params.id;
+    console.log(id)
+    Db.getHubWisebooking().then((data) => {
+      response.json({"id":133,"status":true,"message":data});
+    })
+  } catch (error) {
+    response.json({"id":0,"status":false,"message":error})
+  }
+   
+  })
  router.route('/getordersummeryByBookingNo').post((req,res)=>{
   console.log('tet',req.body)
   Db.getBookingSummaryByBookingID(req.body).then(data =>{
+    console.log(data)
     res.status(200).json(data);
   })
 })

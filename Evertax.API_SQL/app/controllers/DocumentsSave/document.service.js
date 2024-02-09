@@ -47,7 +47,7 @@ async function adddocument(document) {
     return insertProduct.recordsets[0][0]
   } catch (error) {
     console.log('errr',error)
-    throw  error
+    return  error
   }
 }
 async function usp_documentLogin(document) {
