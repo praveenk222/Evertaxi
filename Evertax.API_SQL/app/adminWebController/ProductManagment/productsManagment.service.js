@@ -106,11 +106,7 @@ async  function  addHub(pr) {
     .input('ModifiedBy', sql.NVarChar, pr.ModifiedBy)
     .input('OpenTime',  pr.OpenTime)
     .input('CloseTime',  pr.CloseTime)
-    .input('ProfileImage', sql.NVarChar, pr.ProfileImage)
     .input('BranchType', sql.SmallInt, pr.BranchType)
-    .input('Longitude', pr.Longitude)
-    .input('Latitude', pr.Latitude)
-
     .execute('USP_insert_Hub_webAdmin');
 
     return     {'status':true,'message': insertProduct.recordset[0]}
