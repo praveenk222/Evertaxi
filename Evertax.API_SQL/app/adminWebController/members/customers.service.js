@@ -188,13 +188,31 @@ async function getNotification() {
 }
 async function saveNotification(Member) {
   try {
-    console.log(Member)
     let pool = await sql.connect(config);
     let result = await pool.request()
       .input('NotificationName', sql.NVarChar, Member.NotificationName)
       .input('Description', sql.NVarChar, Member.Description)
       .input('UserID', sql.NVarChar, Member.UserID)
+      .input('ID', sql.BIGINT, Member.ID)
       .execute("Master.[usp_NotificationSave]");
+    const employees = result.recordset[0];
+    if (result.recordset.length == 0) {
+      return { status: false, message: 'Failed to login' }
+    }
+    return { status: true, message: 'Login done', data: employees };
+  } catch (error) {
+    return { status: false, message: 'failed done', data: error.message };
+
+    // res.status(500).json(error);
+  }
+}
+async function removeNotification(Member) {
+  try {
+    console.log(Member)
+    let pool = await sql.connect(config);
+    let result = await pool.request()
+      .input('ID', sql.BIGINT, Member)
+      .execute("Master.[usp_NotificationDelete]");
     const employees = result.recordset[0];
     if (result.recordset.length == 0) {
       return { status: false, message: 'Failed to login' }
@@ -512,5 +530,7 @@ module.exports = {
   getDashboardData:getDashboardData,
   getAdminUserList:getAdminUserList,
   getPriceList:getPriceList,
-  savePriceData:savePriceData
+  savePriceData:savePriceData,
+  removeNotification:removeNotification
+
 }

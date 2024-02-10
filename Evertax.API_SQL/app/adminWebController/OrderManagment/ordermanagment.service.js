@@ -189,9 +189,8 @@ async function getCurrentBookingSummaryofUser(data){
 async function getHubWisebooking(){
   try {
     let pool = await sql.connect(config);
-    console.log('tete')
     const result=await pool.request()
-      .execute(`Security.usp_hubwiseBookings`);
+      .execute(``);
     return result.recordset[0];
   } catch (error) {
     return error.message

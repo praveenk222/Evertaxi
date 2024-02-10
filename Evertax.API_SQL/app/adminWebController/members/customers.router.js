@@ -36,6 +36,12 @@ router.route('/savenotification').post((request, response) => {
 
   })
 })
+router.route('/deleteNotification/:id').get((request, response) => {
+  Db.removeNotification(request.params.id).then(data => {
+    response.status(201).json(data);
+
+  })
+})
 router.route('/adminLogin').post((request, response) => {
   let member = { ...request.body }
   console.log(member)
