@@ -100,5 +100,11 @@ router.route('/gets').get((request, response) => {
     res.status(200).json(data);
   })
 })
+//offres adn 
+ router.route('/offers/getall').get((req,res)=>{
+  Db.getAlloffersndcoupnss().then(data =>{
+    res.status(200).json(data);
+  })
+})
 
 module.exports = router;

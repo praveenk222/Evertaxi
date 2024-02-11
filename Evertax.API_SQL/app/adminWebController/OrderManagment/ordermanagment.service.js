@@ -197,7 +197,17 @@ async function getHubWisebooking(){
   }
 
 }
-
+async  function  getAlloffersndcoupnss() {
+  try {
+    let  pool = await  sql.connect(config);
+    let  insertoffersndcoupns = await  pool.request()   
+    .execute('GetOfferAndCouponList');
+    return  insertoffersndcoupns.recordsets;
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
 module.exports = {
   getOrders:  getOrders,
   getOrder:  getOrder,
@@ -210,5 +220,6 @@ module.exports = {
   getBookingSummaryByBookingID:getBookingSummaryByBookingID,
   getUserCurrentBooking:getCurrentBookingSummaryofUser,
   extendCurrentOrder:Order_Update_Booking_Single,
-  getHubWisebooking:getHubWisebooking
+  getHubWisebooking:getHubWisebooking,
+  getAlloffersndcoupnss:getAlloffersndcoupnss
 }
