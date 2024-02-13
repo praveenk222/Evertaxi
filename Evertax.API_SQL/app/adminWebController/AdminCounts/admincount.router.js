@@ -32,6 +32,17 @@ console.log(data)
   }
  })
  
+ router.route('/savePrice').post((req,res)=>{
+  try {    
+    console.log(req.body)
+    Db.savePriceData(req.body).then((data)=>{
+      res.json(data)
+    })
+  } catch (error) {
+    return error
+  }
+ })
+ 
 
 
 
