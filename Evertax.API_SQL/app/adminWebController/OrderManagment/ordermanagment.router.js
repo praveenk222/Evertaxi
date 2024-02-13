@@ -94,7 +94,7 @@ router.route('/gets').get((request, response) => {
     res.status(200).json(data);
   })
 })
- router.route('/getUserCurrentBooking').post((req,res)=>{
+ router.route('/test').post((req,res)=>{
   console.log('tet',req.body)
   Db.getUserCurrentBooking(req.body).then(data =>{
     res.status(200).json(data);

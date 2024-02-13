@@ -190,7 +190,7 @@ async function getHubWisebooking(){
   try {
     let pool = await sql.connect(config);
     const result=await pool.request()
-      .execute(``);
+      .execute(`Security.usp_hubwiseBookings`);
     return result.recordset[0];
   } catch (error) {
     return error.message
