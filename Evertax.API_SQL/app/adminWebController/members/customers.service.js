@@ -446,6 +446,7 @@ async function saveTabAccess(data) {
         .input('UserID', item.UserID)
         .input('TabID', item.TabID)
         .input('IsActive', item.IsActive)
+        .input('CanAccess', item.CanAccess)
         .execute(`[Security].[usp.insert_UserTabAccess]`);
      isSucess=result.recordset[0]
       }
