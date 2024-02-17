@@ -8,7 +8,7 @@ const spconfig = require('../../Models/storedproc_list')
 async function getMembers() {
   try {
     let pool = await sql.connect(config);
-    let products = await pool.request().query("SELECT *   FROM operation.member  ");
+    let products = await pool.request().query("SELECT *   FROM operation.member order by createdon desc  ");
     return products.recordsets[0];
   }
   catch (error) {

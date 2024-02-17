@@ -178,6 +178,15 @@ async function getBookingSummaryByBookingID(data){
     console.log(result.recordset)
   return result.recordset[0];
 }
+async function getBookingndUserSummaryByBookingID(data){
+  let pool = await sql.connect(config);
+  console.log(data.BookingNo)
+  const result=await pool.request()
+    .input('BookingNo',sql.NVarChar,data.BookingNo)
+    .execute(`[Security].[usp_BookingndUserSummary]`);
+    console.log(result.recordset)
+  return result.recordset[0];
+}
 async function getCurrentBookingSummaryofUser(data){
   let pool = await sql.connect(config);
   const result=await pool.request()
@@ -221,5 +230,6 @@ module.exports = {
   getUserCurrentBooking:getCurrentBookingSummaryofUser,
   extendCurrentOrder:Order_Update_Booking_Single,
   getHubWisebooking:getHubWisebooking,
-  getAlloffersndcoupnss:getAlloffersndcoupnss
+  getAlloffersndcoupnss:getAlloffersndcoupnss,
+  getBookingndUserSummaryByBookingID:getBookingndUserSummaryByBookingID
 }

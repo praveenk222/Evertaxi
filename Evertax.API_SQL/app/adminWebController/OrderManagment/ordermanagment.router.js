@@ -94,6 +94,12 @@ router.route('/gets').get((request, response) => {
     res.status(200).json(data);
   })
 })
+ router.route('/getBookingndUserSummaryByBookingID').post((req,res)=>{
+  Db.getBookingndUserSummaryByBookingID(req.body).then(data =>{
+    console.log(data)
+    res.status(200).json(data);
+  })
+})
  router.route('/test').post((req,res)=>{
   console.log('tet',req.body)
   Db.getUserCurrentBooking(req.body).then(data =>{
