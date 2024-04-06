@@ -21,6 +21,17 @@ async  function  getcoupns() {
     console.log(error);
   }
 }
+async  function  getCategories() {
+  try {
+    let  pool = await  sql.connect(config);
+    let  insertoffersndcoupns = await  pool.request()
+    .execute('getbookcategoryList');
+    return  insertoffersndcoupns.recordsets;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
 
 async  function  addoffersndcoupns(Member) {
   try {
@@ -193,5 +204,6 @@ module.exports = {
   addoffersnew:addoffersnew,
   updateoffers:updateoffers,
   removeoffers:removeoffers,
-  getComplains:getComplains
+  getComplains:getComplains,
+  getCategories:getCategories
 }

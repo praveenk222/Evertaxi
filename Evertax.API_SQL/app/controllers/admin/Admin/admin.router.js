@@ -2,6 +2,7 @@ var  express = require('express');
 const fs=require('fs');
 var  router = express.Router();
 var  Db = require('./admin.service');
+const { request } = require('http');
 
 
 router.use((request, response, next) => {
@@ -74,5 +75,9 @@ router.route('/offers/getall').get((request, response) => {
       response.status(200).json(data);
     })
   })
-
+router.route('/category').get((request,response)=>{
+  Db.getCategories().then(data=>{
+    response.status(200).json(data);
+  })
+})
 module.exports = router;
