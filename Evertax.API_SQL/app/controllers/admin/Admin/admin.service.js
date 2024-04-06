@@ -26,7 +26,7 @@ async  function  getCategories() {
     let  pool = await  sql.connect(config);
     let  insertoffersndcoupns = await  pool.request()
     .execute('getbookcategoryList');
-    return  insertoffersndcoupns.recordsets;
+    return  insertoffersndcoupns.recordsets[0];
   }
   catch (error) {
     console.log(error);

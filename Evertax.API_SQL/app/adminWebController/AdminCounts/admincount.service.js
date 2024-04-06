@@ -35,45 +35,7 @@ async function savePriceData(member){
 //#region 
 
 
-///sample chat gpt code
-async function executeQueries() {
-  try {
-    // Connect to the database
-    await sql.connect(config);
 
-    // Execute multiple queries
-    const result1 = await sql.query`SELECT * FROM Table1`;
-    const result2 = await sql.query`SELECT * FROM Table2`;
-
-    // Organize results into an object
-    const responseData = {
-      list1: result1.recordset,
-      list2: result2.recordset
-    };
-
-    // Return the object containing both lists
-    return responseData;
-  } catch (err) {
-    // Handle errors
-    console.error('Error executing queries:', err);
-    throw err;
-  } finally {
-    // Close the connection
-    await sql.close();
-  }
-}
-
-// Usage
-executeQueries()
-  .then(responseData => {
-    console.log('Response Data:', responseData);
-    // Send responseData as a response to the client
-  })
-  .catch(error => {
-    // Handle errors
-    console.error('Error:', error);
-    // Send an error response to the client
-  });
 ///sample chat gpt code
 //#endregion
 module.exports = {
