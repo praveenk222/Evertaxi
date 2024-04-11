@@ -15,6 +15,7 @@ const hubs_product=require('./app/adminWebController/ProductManagment/productsMa
 const admin_customers=require('./app/adminWebController/members/customers.router')
 const admin_orders=require('./app/adminWebController/OrderManagment/ordermanagment.router')
 const admin_counts=require('./app/adminWebController/AdminCounts/admincount.router')
+const bproduct=require('./app/ControllersBooks/ProductMaster/bproducts.router')
 
 var corsOptions = {
   origin: "*"
@@ -44,8 +45,11 @@ app.use("/api/v1/adminweb/customers", admin_customers);
 app.use("/api/v1/adminweb/orders", admin_orders);
 app.use("/api/v1/adminweb/products", hubs_product);
 app.use("/api/v1/adminweb/counts", admin_counts);
+app.use("/api/v1/adminweb/counts", admin_counts);
 
+//productB
 
+app.use("/api/v1/p1/bproduct", bproduct);
 
 
 // set port, listen for requests
