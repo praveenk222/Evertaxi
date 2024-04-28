@@ -31,7 +31,7 @@ async  function  getBookProudcts() {
   try {
     let  pool = await  sql.connect(config);
     let  insertProduct = await  pool.request()   
-    .execute('usp_ProductMasterGetBy_ID');
+    .execute('GetALLProducts');
     return  insertProduct.recordsets;
   }
   catch (err) {

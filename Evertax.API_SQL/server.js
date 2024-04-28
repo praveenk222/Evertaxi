@@ -49,7 +49,7 @@ app.use("/api/v1/adminweb/counts", admin_counts);
 
 //productB
 
-app.use("/api/v1/p1/bproduct", bproduct);
+app.use("/api/v1/adminweb/bproduct", bproduct);
 
 
 // set port, listen for requests
